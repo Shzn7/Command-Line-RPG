@@ -23,7 +23,8 @@ variables:
     --fail-at-end
     --show-version
     -DinstallAtEnd=true
-    -DdeployAtEnd=true  
+    -DdeployAtEnd=true 
+    tags: comp2100-runner 
 
 java-build:
   # select the most appropriate image for your project
