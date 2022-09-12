@@ -1,6 +1,8 @@
 /**
  * LoadGameConfiguration.java class used to read game data from JSON file setting String variables
  * to represent data encodings
+ * NOTE: additional checks on input validation not needed as input is controlled by Game Developers through
+ * JSON file and not controlled by the user
  *
  * @author Shaazaan Majeed
  */
@@ -12,7 +14,6 @@ import java.io.File;
 import java.io.FileReader;
 
 public class LoadGameConfiguration {
-    private static final String JSON_FILE = "src/gameConfiguration.json";
 
     /**
      * Variables to store all game configuration data
@@ -34,10 +35,10 @@ public class LoadGameConfiguration {
      *
      * @author Shaazaan Majeed
      *
+     * @param file, the JSON file to read in order to set variables
      * @return LoadGameConfiguration, setting all the private variables with their respective encodings as read by the JSON File
      */
-    public LoadGameConfiguration setGameConfigFromJsonFile() {
-        File file = new File(JSON_FILE);
+    public LoadGameConfiguration setGameConfigFromJsonFile(File file) {
         Gson gson = new Gson();
         JsonReader jsonReader = null;
         try {
