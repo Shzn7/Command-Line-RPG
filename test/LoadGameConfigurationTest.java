@@ -44,7 +44,7 @@ public class LoadGameConfigurationTest {
     }
 
     @Test(timeout = 1000)
-    public void gameConfigExceptionTest() throws Exception {
+    public void gameConfigExceptionTest() {
         // Catch FileNotFoundException
         LoadGameConfiguration gameConfig = new LoadGameConfiguration().setGameConfigFromJsonFile(testFile4);
 
