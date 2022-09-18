@@ -44,6 +44,7 @@ public class CommandHandlerTest {
     public void PCExceptionTest() {
         assertEquals(new CommandHandler().processCommand("hellllo"), CommandsEnum.NULL);
         assertEquals(new CommandHandler().processCommand("t"), CommandsEnum.NULL);
+        assertEquals(new CommandHandler().processCommand("north1"), CommandsEnum.NULL);
     }
 
     @Test(timeout = 1000)
