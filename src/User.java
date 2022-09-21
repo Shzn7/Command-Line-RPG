@@ -58,6 +58,18 @@ public class User extends Characters {
         System.out.println("Congratulations, you have acquired " +item+ "!");
     }
 
+    /***
+     * Display the user's inventory's Items information.
+     * @author ZHUOJUN XIAO
+     * @return null
+     */
+    public void displayInventory(){
+        for(var a: inventory){
+            System.out.println("Item:\n"+a);
+        }
+    }
+
+
 
 
 
