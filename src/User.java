@@ -1,10 +1,11 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class User extends Characters {
     public String userName;
     public int step;
 
-    public User(String userName, String characterName, int HP, int step, List<Item> inventory) {
+    public User(String userName, String characterName, int HP, int step, ArrayList<Item> inventory) {
         this.userName = userName;
         this.step = step;
         this.inventory = inventory;
