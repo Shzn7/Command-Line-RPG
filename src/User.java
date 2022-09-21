@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Random;
 
 public class User extends Characters {
     public String userName;
@@ -16,6 +17,22 @@ public class User extends Characters {
     public void setAttack() {
 
     }
+
+    /**
+     * This method is used to add an already identified item to the character's inventory and tells the player what items have been obtained.
+     * @author ZHUOJUN XIAO
+     * @param item
+     * @return null
+     */
+
+    public void addItem(Item item){
+        inventory.add(item);
+        System.out.println("Congratulations, you have acquired" + item +"!");
+    }
+
+   
+
+
 
     // Example of making a User please remove when editing how we will be properly doing this in a game scenario
     public static void main(String[] args) {
