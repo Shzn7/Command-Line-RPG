@@ -1,4 +1,8 @@
 public abstract class Item {
+    @Override
+    public String toString() {
+        return getClass().getName();
+    }
     public int damage;
     public int HPBoost;
     public int usage;
