@@ -30,7 +30,34 @@ public class User extends Characters {
         System.out.println("Congratulations, you have acquired" + item +"!");
     }
 
-   
+    /***
+     * This method is used to add a random item to a character's inventory (a random reward) and tells the player what items have been obtained.
+     * @author ZHUOJUN XIAO
+     * @return null
+     */
+    public void addRandomItem(){
+        Random random= new Random();
+        int a= random.nextInt(4);
+
+        Item item = null;
+        if(a==0){
+            item=new Apple();
+        }
+        else if (a==1){
+            item=new HealthPotion();
+        }
+        else if(a==2){
+            item=new SmallRock();
+        }
+        else if(a==3){
+            item=new Sword();
+        }
+
+        inventory.add(item);
+
+        System.out.println("Congratulations, you have acquired " +item+ "!");
+    }
+
 
 
 
