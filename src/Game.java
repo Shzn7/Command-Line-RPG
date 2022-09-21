@@ -44,6 +44,7 @@ public class Game {
             /*
             * Will end the game once the user has reached the end of the gameString
              */
+            Boolean inputCorrect = false;
             if (index >= gamePath.length()) {
                 System.out.println("You made it to the end, congrats!");
                 break;
@@ -60,14 +61,23 @@ public class Game {
 
             if (command.equals(CommandsEnum.QUIT)) {break;}
 
-            //Temporary outlets for SAVE, LOAD, HELP, INV, STATS
+            //Temporary outlets for SAVE, LOAD, HELP, STATS
             if (command.equals(CommandsEnum.SAVE) || command.equals(CommandsEnum.LOAD)
-                    || command.equals(CommandsEnum.HELP) || command.equals(CommandsEnum.INV) || command.equals(CommandsEnum.STATS)) {
+                    || command.equals(CommandsEnum.HELP) || command.equals(CommandsEnum.STATS)) {
                 System.out.println(input + " is under construction, please try again.");}
+
+            //Display the user inventory's Items
+            if(command.equals(CommandsEnum.INV)){
+                bob.displayInventory();
+                inputCorrect = true;
+            }
+
 
 
             if (command.equals(CommandsEnum.NULL)) {
                 System.out.println(input + " was an invalid input, please try again.");
+                inputCorrect = true;
+
             }
 
             /*
@@ -80,24 +90,27 @@ public class Game {
             CommandsEnum eventPath = (new CommandHandler().processCommand(encounterPath.charAt(index) + ""));
             CommandsEnum eventType = (new CommandHandler().processEncounter(encounterType.charAt(index)));
 
-            if (command.equals(correctPath)) {
-                index++;
-                System.out.println(input + " was the correct path, you continue on your journey.");
-            } else {
-                if (command.equals(eventPath)) {
-
-                    switch (eventPath) {
-                        case ENEMY -> Interactions.battle();
-                        case NPC -> Interactions.talkWithNPC();
-                        case REWARD -> Interactions.reward();
-                    }
-
-                    System.out.println(input + " was the encounter path, you would have a " + eventType);
+            if (!inputCorrect) {
+                if (command.equals(correctPath)) {
+                    index++;
+                    System.out.println(input + " was the correct path, you continue on your journey.");
                 } else {
-                    System.out.println(input + " is the wrong way! Try again.");
+                    if (command.equals(eventPath)) {
+
+                        switch (eventPath) {
+                            case ENEMY -> Interactions.battle();
+                            case NPC -> Interactions.talkWithNPC();
+                            case REWARD -> bob.addRandomItem();
+                        }
+
+                        System.out.println(input + " was the encounter path, you would have a " + eventType);
+                    } else {
+                        System.out.println(input + " is the wrong way! Try again.");
+                    }
                 }
             }
 
         }
     }
+
 }
