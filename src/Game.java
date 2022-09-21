@@ -1,8 +1,10 @@
 import java.io.File;
+import java.util.List;
 import java.util.Scanner;
 
 public class Game {
     private static final String JSON_FILE = "src/gameConfiguration.json";
+    private static User user;
 
     public static void main(String[] args) {
         File gameConfigFile = new File(JSON_FILE);
@@ -29,9 +31,18 @@ public class Game {
         Scanner read = new Scanner(System.in);
         String input = read.nextLine();
         switch (input.toUpperCase()) {
-            case "A", "NINJA" -> System.out.println("you picked NINJA");
-            case "B", "WIZARD" -> System.out.println("you picked WIZARD");
-            case "C", "PIRATE" -> System.out.println("you picked PIRATE");
+            case "A", "NINJA" -> {
+                System.out.println("you picked NINJA");
+                user = new User("", "Ninja", 95, 0, null);
+            }
+            case "B", "WIZARD" -> {
+                System.out.println("you picked WIZARD");
+                user = new User("", "Wizard", 95, 0, null);
+            }
+            case "C", "PIRATE" -> {
+                System.out.println("you picked PIRATE");
+                user = new User("", "Pirate", 95, 0, null);
+            }
             default -> {
                 System.out.println("Not a valid input try again");
                 selectCharacter();
