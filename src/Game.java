@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Game {
@@ -10,6 +11,12 @@ public class Game {
     private static String gamePath  = "";
     private static String encounterPath  = "";
     private static String encounterType  = "";
+
+
+
+    // This is a temporary role created for development purposes and can be deleted after development once the role creation function has been completed.
+    static User bob = new User("bob", "Wizard", 100, 0, new ArrayList<Item>() );
+
 
     /**
      * Index to store the place along the gameString the user is at.
