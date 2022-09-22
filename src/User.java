@@ -70,10 +70,6 @@ public class User extends Characters {
         }
     }
 
-
-
-
-
     public void setUserName(String userName) {
         this.userName = userName;
     }

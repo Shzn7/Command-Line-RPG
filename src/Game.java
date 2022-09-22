@@ -1,9 +1,6 @@
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Game {
@@ -16,11 +13,6 @@ public class Game {
     private static String gamePath  = "";
     private static String encounterPath  = "";
     private static String encounterType  = "";
-
-
-
-    // This is a temporary role created for development purposes and can be deleted after development once the role creation function has been completed.
-    static User bob = new User("bob", "Wizard", 100, 0, new ArrayList<Item>() );
 
 
     /**
@@ -36,7 +28,14 @@ public class Game {
         System.out.println("Encounter Path: " + gameConfig.getEncounterPath());
         System.out.println("Encounter Type: " + gameConfig.getEncounterType());
 
+
         selectCharacter();
+        // Setting our username
+        System.out.println("\nChoose your username:");
+        Scanner read = new Scanner(System.in);
+        String username = read.nextLine();
+        user.setUserName(username);
+        System.out.println("Your username is "+user.userName);
 
         gamePath =  gameConfig.getGamePath();
         encounterPath = gameConfig.getEncounterPath();
@@ -48,6 +47,7 @@ public class Game {
     /**
      * Called the first time a user runs the game.
      * Allows user to choose the character they want to play as.
+     * @author Deni Lanc
      */
     public static void selectCharacter() {
 
@@ -79,12 +79,6 @@ public class Game {
                 selectCharacter();
             }
         }
-
-        gamePath =  gameConfig.getGamePath();
-        encounterPath = gameConfig.getEncounterPath();
-        encounterType = gameConfig.getEncounterType();
-
-        move();
     }
 
     public static void move(){
@@ -117,7 +111,7 @@ public class Game {
 
             //Display the user inventory's Items
             if(command.equals(CommandsEnum.INV)){
-                bob.displayInventory();
+                user.displayInventory();
                 inputCorrect = true;
             }
 
@@ -149,7 +143,7 @@ public class Game {
                         switch (eventPath) {
                             case ENEMY -> Interactions.battle();
                             case NPC -> Interactions.talkWithNPC();
-                            case REWARD -> bob.addRandomItem();
+                            case REWARD -> user.addRandomItem();
                         }
 
                         System.out.println(input + " was the encounter path, you would have a " + eventType);
