@@ -5,6 +5,16 @@ public class Characters {
     List<Item> inventory;
     public String characterName;
 
+    public Characters(String characterName, int HP, List<Item> inventory) {
+        this.characterName = characterName;
+        this.HP = HP;
+        this.inventory = inventory;
+    }
+
+    public Characters() {
+
+    }
+
     public int getHP() {
         return HP;
     }

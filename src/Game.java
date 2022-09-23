@@ -29,7 +29,7 @@ public class Game {
         System.out.println("Encounter Type: " + gameConfig.getEncounterType());
 
 
-        selectCharacter();
+        setupCharacter();
         // Setting our username
         System.out.println("\nChoose your username:");
         Scanner read = new Scanner(System.in);
@@ -49,7 +49,7 @@ public class Game {
      * Allows user to choose the character they want to play as.
      * @author Deni Lanc
      */
-    public static void selectCharacter() {
+    public static void setupCharacter() {
 
         System.out.println("\nPick your character:");
         System.out.println("a) Ninja");
@@ -64,19 +64,19 @@ public class Game {
         switch (input.toUpperCase()) {
             case "A", "NINJA" -> {
                 System.out.println("you picked NINJA");
-                user = new User("", "Ninja", 95, 0, new ArrayList<>(Arrays.asList(new Nunchucks(), new Punch(), new Kick())));
+                user = new User(0);
             }
             case "B", "WIZARD" -> {
                 System.out.println("you picked WIZARD");
-                user = new User("", "Wizard", 100, 0, new ArrayList<>(Arrays.asList(new Wand(), new FireBall(), new Poison())));
+                user = new User(1);
             }
             case "C", "PIRATE" -> {
                 System.out.println("you picked PIRATE");
-                user = new User("", "Pirate", 85, 0, new ArrayList<>(Arrays.asList(new Sword(), new Pistol(), new SmallRock())));
+                user = new User(2);
             }
             default -> {
                 System.out.println("Not a valid input try again");
-                selectCharacter();
+                setupCharacter();
             }
         }
     }
