@@ -1,9 +1,11 @@
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Game {
     private static final String JSON_FILE = "src/gameConfiguration.json";
+    private static User user;
 
     /**
      * Variables to store all game configuration data
@@ -11,11 +13,6 @@ public class Game {
     private static String gamePath  = "";
     private static String encounterPath  = "";
     private static String encounterType  = "";
-
-
-
-    // This is a temporary role created for development purposes and can be deleted after development once the role creation function has been completed.
-    static User bob = new User("bob", "Wizard", 100, 0, new ArrayList<Item>() );
 
 
     /**
@@ -31,11 +28,57 @@ public class Game {
         System.out.println("Encounter Path: " + gameConfig.getEncounterPath());
         System.out.println("Encounter Type: " + gameConfig.getEncounterType());
 
+
+        setupCharacter();
+        // Setting our username
+        System.out.println("\nChoose your username:");
+        Scanner read = new Scanner(System.in);
+        String username = read.nextLine();
+        user.setUserName(username);
+        System.out.println("Your username is "+user.userName);
+
         gamePath =  gameConfig.getGamePath();
         encounterPath = gameConfig.getEncounterPath();
         encounterType = gameConfig.getEncounterType();
 
         move();
+    }
+
+    /**
+     * Called the first time a user runs the game.
+     * Allows user to choose the character they want to play as.
+     * @author Deni Lanc
+     */
+    public static void setupCharacter() {
+
+        System.out.println("\nPick your character:");
+        System.out.println("a) Ninja");
+        System.out.println("  HP: 95 Attacks: Nunchucks, Punch, Kick");
+        System.out.println("b) Wizard");
+        System.out.println("  HP: 100 Attacks: Wand, Cat, Potion");
+        System.out.println("c) Pirate");
+        System.out.println("  HP: 85  Attacks: Sword, Pistol, Small Rock");
+
+        Scanner read = new Scanner(System.in);
+        String input = read.nextLine();
+        switch (input.toUpperCase()) {
+            case "A", "NINJA" -> {
+                System.out.println("you picked NINJA");
+                user = new User(0);
+            }
+            case "B", "WIZARD" -> {
+                System.out.println("you picked WIZARD");
+                user = new User(1);
+            }
+            case "C", "PIRATE" -> {
+                System.out.println("you picked PIRATE");
+                user = new User(2);
+            }
+            default -> {
+                System.out.println("Not a valid input try again");
+                setupCharacter();
+            }
+        }
     }
 
     public static void move(){
@@ -68,7 +111,7 @@ public class Game {
 
             //Display the user inventory's Items
             if(command.equals(CommandsEnum.INV)){
-                bob.displayInventory();
+                user.displayInventory();
                 inputCorrect = true;
             }
 
@@ -100,7 +143,7 @@ public class Game {
                         switch (eventPath) {
                             case ENEMY -> Interactions.battle();
                             case NPC -> Interactions.talkWithNPC();
-                            case REWARD -> bob.addRandomItem();
+                            case REWARD -> user.addRandomItem();
                         }
 
                         System.out.println(input + " was the encounter path, you would have a " + eventType);
