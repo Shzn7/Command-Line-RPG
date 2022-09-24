@@ -81,8 +81,9 @@ public class User extends Characters {
      * @return null
      */
     public void displayInventory(){
+        System.out.println("Item:");
         for(var a: inventory){
-            System.out.println("Item:\n"+a);
+            System.out.println(a);
         }
     }
 
