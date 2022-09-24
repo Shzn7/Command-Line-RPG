@@ -31,13 +31,6 @@ public class selectCharacterTest {
         assertEquals(user3.inventory.get(2).getDamage(), new SmallRock().getDamage());
     }
 
-    @Test(timeout = 1000)
-    public void characterStepTest() {
-        assertEquals(user1.step, 0);
-        assertEquals(user2.step, 0);
-        assertEquals(user3.step, 0);
-    }
-
     @Test(timeout = 1000, expected = ArrayIndexOutOfBoundsException.class)
     public void gameConfigExceptionTest() {
         // Catch User characterSelection out of bounds
