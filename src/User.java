@@ -84,6 +84,15 @@ public class User extends Characters {
         }
     }
 
+    /**
+     * Simple get method for the username
+     * @return the current userName
+     * @author Brad Froud (u7285455)
+     */
+    public String getUserName() {
+        return this.userName;
+    }
+
     // Sets the users username (different from character name)
     public void setUserName(String userName) {
         this.userName = userName;

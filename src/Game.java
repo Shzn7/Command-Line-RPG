@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class Game {
     private static final String JSON_FILE = "src/gameConfiguration.json";
     private static User user;
+    private static SaveLoad saveLoadHandler;
 
     /**
      * Variables to store all game configuration data
@@ -23,25 +24,69 @@ public class Game {
     public static void main(String[] args) {
         File gameConfigFile = new File(JSON_FILE);
         LoadGameConfiguration gameConfig = new LoadGameConfiguration().setGameConfigFromJsonFile(gameConfigFile);
+        saveLoadHandler = new SaveLoad();
 
         System.out.println("Game Path     : " + gameConfig.getGamePath());
         System.out.println("Encounter Path: " + gameConfig.getEncounterPath());
         System.out.println("Encounter Type: " + gameConfig.getEncounterType());
 
+        // Asking the user if they would like to load from save file
+        boolean didLoad = handleLoadRequest();
 
-        setupCharacter();
-        // Setting our username
-        System.out.println("\nChoose your username:");
-        Scanner read = new Scanner(System.in);
-        String username = read.nextLine();
-        user.setUserName(username);
-        System.out.println("Your username is "+user.userName);
+        // if the user decided not to load from save game, run through normal setup
+        if(!didLoad)
+        {
+            setupCharacter();
+            // Setting our username
+            System.out.println("\nChoose your username:");
+            Scanner read = new Scanner(System.in);
+            String username = read.nextLine();
+            user.setUserName(username);
+            System.out.println("Your username is "+user.userName);
 
-        gamePath =  gameConfig.getGamePath();
-        encounterPath = gameConfig.getEncounterPath();
-        encounterType = gameConfig.getEncounterType();
+            gamePath =  gameConfig.getGamePath();
+            encounterPath = gameConfig.getEncounterPath();
+            encounterType = gameConfig.getEncounterType();
+        }
 
         move();
+    }
+
+    /**
+     * Function to handle the user requesting to load from a save game
+     * after interpreting whether they would like to.
+     *
+     * @return boolean for whether the user did (true) or did not (false) load.
+     *
+     * @author Brad Froud (u7285455)
+     */
+    private static boolean handleLoadRequest()
+    {
+        System.out.println("\nLoad from save file? (Y/N)");
+        Scanner read = new Scanner(System.in);
+        String loadResponse = read.nextLine();
+
+        switch (loadResponse.toUpperCase())
+        {
+            case "Y", "YES" ->
+            {
+                System.out.println("\nLoading...");
+                // do the loading stuff
+                System.out.println("Done!");
+                return true;
+            }
+            case "N", "NO" ->
+            {
+                System.out.println("\nContinuing to new game...");
+                return false;
+            }
+            default ->
+            {
+                System.out.println("\nNot a valid input. Please try again.");
+                handleLoadRequest();
+            }
+        }
+        return false;
     }
 
     /**
@@ -105,9 +150,29 @@ public class Game {
             if (command.equals(CommandsEnum.QUIT)) {break;}
 
             //Temporary outlets for SAVE, LOAD, HELP, STATS
-            if (command.equals(CommandsEnum.SAVE) || command.equals(CommandsEnum.LOAD)
+            if (command.equals(CommandsEnum.LOAD)
                     || command.equals(CommandsEnum.HELP) || command.equals(CommandsEnum.STATS)) {
                 System.out.println(input + " is under construction, please try again.");}
+
+            // Save the game to file
+            if(command.equals(CommandsEnum.SAVE))
+            {
+                System.out.println("\nSaving...");
+                File gameConfigFile = new File(JSON_FILE);
+                saveLoadHandler.saveGameStateToFile(new LoadGameConfiguration().setGameConfigFromJsonFile(gameConfigFile), index, user);
+                inputCorrect = true;
+                System.out.println("Done!");
+            }
+
+            // Load the game from file
+            if(command.equals(CommandsEnum.LOAD))
+            {
+                System.out.println("\nLoading...");
+                //saveLoadHandler.loadGameStateFromFile(this);
+                //TODO
+                inputCorrect = true;
+                System.out.println("Done!");
+            }
 
             //Display the user inventory's Items
             if(command.equals(CommandsEnum.INV)){
@@ -154,6 +219,28 @@ public class Game {
             }
 
         }
+    }
+
+    /**
+     * Setter method to set the correctGamePath
+     * @author Brad Froud (u7285455)
+     */
+    public void setGamePath(String input) { gamePath = input; }
+
+    /**
+     * Setter method to set the encounterPath
+     * @author Brad Froud (u7285455)
+     */
+    public void setEncounterPath(String input) {
+        encounterPath = input;
+    }
+
+    /**
+     * Setter method to set the encounterType
+     * @author Brad Froud (u7285455)
+     */
+    public void setEncounterType(String input) {
+        encounterType = input;
     }
 
 }
