@@ -1,4 +1,6 @@
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -6,7 +8,18 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * A class to handle the saving and loading logic to and from
+ * the JSON file 'saveGames.json'. Does not currently support
+ * multiple save slots, but is designed such that implementing
+ * them would not require much refactoring or any major changes.
+ *
+ * @author Brad Froud (u7285455)
+ */
 public class SaveLoad
 {
     public SaveLoad() {} // empty constructor for completeness
@@ -36,13 +49,17 @@ public class SaveLoad
 
         // Build objects related to user state
         JSONObject user = new JSONObject();
-        gc.put("username", playerUser.getUserName());
+        user.put("username", playerUser.getUserName());
+        JSONArray invList = new JSONArray();
         for (Item item : playerUser.getInventory())
         {
-            gc.put("inventory", item.toString());
+            JSONObject itemName = new JSONObject();
+            itemName.put("itemName", item.toString());
+            invList.add(itemName);
         }
-        gc.put("hitPoints", playerUser.getHP());
-        gc.put("characterName", playerUser.getCharacterName());
+        user.put("inventory", invList);
+        user.put("hitPoints", playerUser.getHP());
+        user.put("characterName", playerUser.getCharacterName());
 
         // Build final object to save
         JSONObject saveData = new JSONObject();
@@ -70,10 +87,19 @@ public class SaveLoad
     }
 
     /**
+     * A method to load a game state from a file, returning all
+     * game state defining variables so that they may be used to
+     * restore the current game's variables to what they were at
+     * the point which the user saved their game/progress.
+     * 
+     * @return an ArrayList of gamePath, encounterPath, encounterType, gameStep, userName, inventory, HP, and characterName
      *
+     * @author Brad Froud (u7285455)
      */
-    public void loadGameStateFromFile(Game currentGame)
+    public ArrayList<Object> loadGameStateFromFile()
     {
+        ArrayList<Object> outputList = new ArrayList<Object>();
+
         JSONParser parser = new JSONParser();
 
         try(FileReader reader = new FileReader("saveGames.json"))
@@ -82,24 +108,24 @@ public class SaveLoad
             Object obj = parser.parse(reader);
             JSONObject savedGame = (JSONObject) obj;
 
-            // Parse the object
+            // Parse the object:
+
             // Game config info
             JSONObject gc = (JSONObject) savedGame.get("gameConfig");
-            currentGame.setGamePath((String) gc.get("correctGamePath"));
-            currentGame.setEncounterPath((String) gc.get("encounterPath"));
-            currentGame.setEncounterType((String) gc.get("encounterType"));
+            outputList.add((String) gc.get("correctGamePath"));
+            outputList.add((String) gc.get("encounterPath"));
+            outputList.add((String) gc.get("encounterType"));
 
             // Game step info
             JSONObject step = (JSONObject) savedGame.get("gameStep");
-            // TODO
-
+            outputList.add(Math.toIntExact((long) step.get("index")));
 
             // User state info
-            JSONObject user = (JSONObject) savedGame.get("playerUser");
-            // TODO
-
-
-
+            JSONObject userJSON = (JSONObject) savedGame.get("playerUser");
+            outputList.add((String) userJSON.get("username"));
+            outputList.add(buildInventoryFromUserJSON(userJSON));
+            outputList.add(Math.toIntExact((long) userJSON.get("hitPoints")));
+            outputList.add((String) userJSON.get("characterName"));
         }
         catch (FileNotFoundException e)
         {
@@ -112,6 +138,66 @@ public class SaveLoad
             System.out.println("\nThere was an error saving the save game.");
             System.out.println("Error message: " + e);
             System.out.println("Please try again later.");
+        }
+
+        // Outputs the data to be loaded every time a save game is restored.
+        System.out.println(outputList); // remove if this is not desired
+        return outputList;
+    }
+
+    /**
+     * A helper method for the loadGameStateFromFile method used to generate
+     * a list of items - an inventory - from an input JSON user which would
+     * have been saved to file earlier and is now being loaded back into the
+     * game.
+     *
+     * @param savedUser the JSONObject storing the user data which was saved
+     * @return a list of items (an inventory)
+     *
+     * @author Brad Froud (u7285455)
+     */
+    public List<Item> buildInventoryFromUserJSON(JSONObject savedUser)
+    {
+        List<Item> outputList = new ArrayList<>();
+
+        JSONArray invList = (JSONArray) savedUser.get("inventory");
+
+        invList.forEach(item -> captureItem((JSONObject) item, outputList));
+
+        return outputList;
+    }
+
+    /**
+     * A helper method for buildInventoryFromUserJSON to interpret
+     * the JSON container for a single item in string/name form and
+     * save the appropriate item object to the output list from the
+     * caller method.
+     *
+     * @param item a single inventory item in JSONObject format
+     * @param outList list to add interpreted item to
+     *
+     * @author Brad Froud
+     */
+    private void captureItem(JSONObject item, List<Item> outList)
+    {
+        String itemName = (String) item.get("itemName");
+
+        // this switch is poor code style, but without external change,
+        // this is the best solution I could come up with
+        switch (itemName.toUpperCase())
+        {
+            case "SWORD" -> outList.add(new Sword());
+            case "PISTOL" -> outList.add(new Pistol());
+            case "WAND" -> outList.add(new Wand());
+            case "FIREBALL" -> outList.add(new FireBall());
+            case "POISON" -> outList.add(new Poison());
+            case "HEALTHPOTION" -> outList.add(new HealthPotion());
+            case "SMALLROCK" -> outList.add(new SmallRock());
+            case "NUNCHUCKS" -> outList.add(new Nunchucks());
+            case "PUNCH" -> outList.add(new Punch());
+            case "KICK" -> outList.add(new Kick());
+            case "APPLE" -> outList.add(new Apple());
+            default -> System.out.println("Error while loading: Invalid item detected in saved inventory.");
         }
     }
 }

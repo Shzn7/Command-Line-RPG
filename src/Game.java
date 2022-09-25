@@ -1,6 +1,7 @@
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Game {
@@ -19,7 +20,7 @@ public class Game {
     /**
      * Index to store the place along the gameString the user is at.
      */
-    static int index = 0;
+    private static int index = 0;
 
     public static void main(String[] args) {
         File gameConfigFile = new File(JSON_FILE);
@@ -71,7 +72,9 @@ public class Game {
             case "Y", "YES" ->
             {
                 System.out.println("\nLoading...");
-                // do the loading stuff
+                // Initiate the user variable so that loading doesn't crash the game
+                user = new User("System", "tempChar", 1, new ArrayList<>(List.of(new Punch())));
+                loadHelper();
                 System.out.println("Done!");
                 return true;
             }
@@ -126,6 +129,10 @@ public class Game {
         }
     }
 
+    /**
+     *
+     * @authors collaborative effort
+     */
     public static void move(){
 
         while(true) {
@@ -149,9 +156,8 @@ public class Game {
 
             if (command.equals(CommandsEnum.QUIT)) {break;}
 
-            //Temporary outlets for SAVE, LOAD, HELP, STATS
-            if (command.equals(CommandsEnum.LOAD)
-                    || command.equals(CommandsEnum.HELP) || command.equals(CommandsEnum.STATS)) {
+            //Temporary outlets for HELP, STATS
+            if (command.equals(CommandsEnum.HELP) || command.equals(CommandsEnum.STATS)){
                 System.out.println(input + " is under construction, please try again.");}
 
             // Save the game to file
@@ -159,6 +165,9 @@ public class Game {
             {
                 System.out.println("\nSaving...");
                 File gameConfigFile = new File(JSON_FILE);
+                // the first parameter passed here below should be changed to some form
+                // of concatenation of the three path strings if procedurally (or
+                // otherwise) generated strings are implemented.
                 saveLoadHandler.saveGameStateToFile(new LoadGameConfiguration().setGameConfigFromJsonFile(gameConfigFile), index, user);
                 inputCorrect = true;
                 System.out.println("Done!");
@@ -168,8 +177,7 @@ public class Game {
             if(command.equals(CommandsEnum.LOAD))
             {
                 System.out.println("\nLoading...");
-                //saveLoadHandler.loadGameStateFromFile(this);
-                //TODO
+                loadHelper();
                 inputCorrect = true;
                 System.out.println("Done!");
             }
@@ -222,16 +230,38 @@ public class Game {
     }
 
     /**
+     * A helper method to load saved data from file using external class
+     * then update the appropriate variables in this class.
+     *
+     * @author Brad Froud (u7285455)
+     */
+    private static void loadHelper()
+    {
+        ArrayList<Object> savedGameList = saveLoadHandler.loadGameStateFromFile();
+        // Update path variables
+        setGamePath((String) savedGameList.get(0));
+        setEncounterPath((String) savedGameList.get(1));
+        setEncounterType((String) savedGameList.get(2));
+        // Update index
+        setIndex((int) savedGameList.get(3));
+        // Update user variables
+        getUser().setUserName((String) savedGameList.get(4));
+        getUser().setInventory((List<Item>) savedGameList.get(5));
+        getUser().setHP((int) savedGameList.get(6));
+        getUser().setCharacterName((String) savedGameList.get(7));
+    }
+
+    /**
      * Setter method to set the correctGamePath
      * @author Brad Froud (u7285455)
      */
-    public void setGamePath(String input) { gamePath = input; }
+    public static void setGamePath(String input) { gamePath = input; }
 
     /**
      * Setter method to set the encounterPath
      * @author Brad Froud (u7285455)
      */
-    public void setEncounterPath(String input) {
+    public static void setEncounterPath(String input) {
         encounterPath = input;
     }
 
@@ -239,8 +269,22 @@ public class Game {
      * Setter method to set the encounterType
      * @author Brad Froud (u7285455)
      */
-    public void setEncounterType(String input) {
+    public static void setEncounterType(String input) {
         encounterType = input;
     }
+
+    /**
+     * Setter method to set the index/step value
+     * @author Brad Froud (u7285455)
+     */
+    public static void setIndex(int input) {
+        index = input;
+    }
+
+    /**
+     * Getter method to retrieve a reference to the user
+     * @author Brad Froud (u7285455)
+     */
+    public static User getUser() { return user; }
 
 }
