@@ -1,8 +1,11 @@
+import java.util.ArrayList;
+
 public abstract class Item {
     @Override
     public String toString() {
-        return getClass().getName();
+        return name;
     }
+    public String name;
     public int damage;
     public int HPBoost;
     public int usage;
@@ -43,6 +46,7 @@ public abstract class Item {
 
 class Sword extends Item {
     public Sword() {
+        name = "Sword";
         damage = 20;
         usage = 2;
         isWeapon = true;
@@ -51,6 +55,7 @@ class Sword extends Item {
 
 class Pistol extends Item {
     public Pistol() {
+        name = "Pistol";
         damage = 25;
         usage = 1;
         isWeapon = true;
@@ -59,6 +64,7 @@ class Pistol extends Item {
 
 class Wand extends Item {
     public Wand() {
+        name = "Wand";
         damage = 25;
         usage = 1;
         isWeapon = true;
@@ -67,6 +73,7 @@ class Wand extends Item {
 
 class FireBall extends Item {
     public FireBall() {
+        name = "Fire Ball";
         damage = 25;
         usage = 1;
         isWeapon = true;
@@ -75,6 +82,7 @@ class FireBall extends Item {
 
 class Poison extends Item {
     public Poison() {
+        name = "Poison";
         damage = 25;
         usage = 1;
         isWeapon = true;
@@ -83,13 +91,16 @@ class Poison extends Item {
 
 class HealthPotion extends Item {
     public HealthPotion() {
+        name = "Health Potion";
         isWeapon = false;
+        usage = 1;
         HPBoost = 25;
     }
 }
 
 class  SmallRock extends Item {
     public SmallRock() {
+        name = "Small Rock";
         damage = 10;
         usage = 5;
         isWeapon = true;
@@ -98,6 +109,7 @@ class  SmallRock extends Item {
 
 class  Nunchucks extends Item {
     public Nunchucks() {
+        name = "Nunchucks";
         damage = 15;
         usage = 2;
         isWeapon = true;
@@ -106,20 +118,118 @@ class  Nunchucks extends Item {
 
 class Punch extends Item {
     public Punch() {
+        name = "Punch";
         damage = 10;
-        usage = 5;
+        usage = 8;
         isWeapon = true;
     }
 }
 
 class  Kick extends Item {
     public Kick() {
+        name = "Kick";
         damage = 10;
-        usage = 5;
+        usage = 8;
+        isWeapon = true;
+    }
+}
+
+class  StockMarket extends Item {
+    public StockMarket() {
+        name = "Stock Market";
+        damage = 20;
+        usage = 3;
         isWeapon = true;
     }
 }
 
 class Apple extends Item {
+    public Apple() {
+        name = "Apple";
+        usage = 1;
+        isWeapon = false;
+        HPBoost = 15;
+    }
+}
 
+class Fire extends Item {
+    public Fire() {
+        name = "Fire";
+        damage = 20;
+        usage = 2;
+        isWeapon = true;
+    }
+}
+
+class EvilThoughts extends Item {
+    public EvilThoughts() {
+        name = "Bad Thoughts";
+        damage = 15;
+        usage = 2;
+        isWeapon = true;
+    }
+}
+
+
+class SelfDrivingCar extends Item {
+    public SelfDrivingCar() {
+        name = "Self-driving Car Army Attack";
+        damage = 30;
+        usage = 1;
+        isWeapon = true;
+    }
+}
+
+class TwitterAttack extends Item {
+    public TwitterAttack() {
+        name = "Twitter Attack";
+        damage = 10;
+        usage = 8;
+        isWeapon = true;
+    }
+}
+
+class Lawsuit extends Item {
+    public Lawsuit() {
+        name = "Lawsuit";
+        damage = 15;
+        usage = 3;
+        isWeapon = true;
+    }
+}
+
+class ZombieBite extends Item {
+    public ZombieBite() {
+        name = "bite";
+        damage = 15;
+        usage = 3;
+        isWeapon = true;
+    }
+}
+
+class Moan extends Item {
+    public Moan() {
+        name = "Moan";
+        damage = 10;
+        usage = 8;
+        isWeapon = true;
+    }
+}
+
+class Headbutt extends Item {
+    public Headbutt() {
+        name = "Headbutt";
+        damage = 20;
+        usage = 2;
+        isWeapon = true;
+    }
+}
+
+class DeveloperDonation extends Item {
+    public DeveloperDonation() {
+        name = "Developer-Donated Smack";
+        damage = 5;
+        usage = 8;
+        isWeapon = true;
+    }
 }

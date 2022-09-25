@@ -37,9 +37,9 @@ public class Game {
         user.setUserName(username);
         System.out.println("Your username is "+user.userName);
 
-        gamePath =  gameConfig.getGamePath();
-        encounterPath = gameConfig.getEncounterPath();
-        encounterType = gameConfig.getEncounterType();
+        gamePath =  "S" + gameConfig.getGamePath();
+        encounterPath = "W" + gameConfig.getEncounterPath();
+        encounterType = "E" +  gameConfig.getEncounterType();
 
         move();
     }
@@ -52,26 +52,23 @@ public class Game {
     public static void setupCharacter() {
 
         System.out.println("\nPick your character:");
-        System.out.println("a) Ninja");
-        System.out.println("  HP: 95 Attacks: Nunchucks, Punch, Kick");
-        System.out.println("b) Wizard");
-        System.out.println("  HP: 100 Attacks: Wand, Cat, Potion");
-        System.out.println("c) Pirate");
-        System.out.println("  HP: 85  Attacks: Sword, Pistol, Small Rock");
+        System.out.println("a) " + (new User(0)).introPrint());
+        System.out.println("b) " + (new User(1)).introPrint());
+        System.out.println("c) " + (new User(2)).introPrint());
 
         Scanner read = new Scanner(System.in);
         String input = read.nextLine();
         switch (input.toUpperCase()) {
             case "A", "NINJA" -> {
-                System.out.println("you picked NINJA");
+                System.out.println("You picked NINJA");
                 user = new User(0);
             }
             case "B", "WIZARD" -> {
-                System.out.println("you picked WIZARD");
+                System.out.println("You picked WIZARD");
                 user = new User(1);
             }
             case "C", "PIRATE" -> {
-                System.out.println("you picked PIRATE");
+                System.out.println("You picked PIRATE");
                 user = new User(2);
             }
             default -> {
@@ -82,16 +79,22 @@ public class Game {
     }
 
     public static void move(){
+        int lastRewardIndex = -1;
+        int lastEnemyIndex = -1;
 
         while(true) {
-            /*
-            * Will end the game once the user has reached the end of the gameString
-             */
-            Boolean inputCorrect = false;
+            System.out.println("----------------------------------------");
             if (index >= gamePath.length()) {
                 System.out.println("You made it to the end, congrats!");
                 break;
             }
+
+            System.out.println("What direction do you want to go? ");
+
+            /*
+            * Will end the game once the user has reached the end of the gameString
+             */
+            Boolean inputCorrect = false;
 
             Scanner read = new Scanner(System.in);
             String input = read.nextLine();
@@ -136,22 +139,40 @@ public class Game {
             if (!inputCorrect) {
                 if (command.equals(correctPath)) {
                     index++;
-                    System.out.println(input + " was the correct path, you continue on your journey.");
+                    System.out.println(input + " was the correct step, you continue on your journey.");
+                    if (index%5 == 0) {
+                        user.addRandomItem();
+                    }
+
                 } else {
                     if (command.equals(eventPath)) {
 
-                        switch (eventPath) {
-                            case ENEMY -> Interactions.battle();
+                        switch (eventType) {
+                            case ENEMY -> {
+                                if (lastEnemyIndex == index) {
+                                    System.out.println("You don't want to go back that way!");
+                                } else {
+                                    Interactions.battle(user);
+                                    lastEnemyIndex = index;
+                                }
+                            }
                             case NPC -> Interactions.talkWithNPC();
-                            case REWARD -> user.addRandomItem();
+                            case REWARD -> {
+                                if (lastRewardIndex == index) {
+                                    System.out.println("You can't have another reward you cheeky bugger!");
+                                } else {
+                                    user.addRandomItem();
+                                    lastRewardIndex = index;
+                                }
+                            }
                         }
-
-                        System.out.println(input + " was the encounter path, you would have a " + eventType);
                     } else {
                         System.out.println(input + " is the wrong way! Try again.");
                     }
                 }
             }
+
+            if (user.getHP() <= 0) {break; }
 
         }
     }

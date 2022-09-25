@@ -5,9 +5,9 @@ import java.util.Random;
 
 public class User extends Characters {
     private final List<Characters> defaultCharacters = Arrays.asList(
-            new Characters("Ninja", 95, new ArrayList<>(Arrays.asList(new Nunchucks(), new Punch(), new Kick()))),
-            new Characters("Wizard", 100, new ArrayList<>(Arrays.asList(new Wand(), new FireBall(), new Poison()))),
-            new Characters("Pirate", 85, new ArrayList<>(Arrays.asList(new Sword(), new Pistol(), new SmallRock()))));
+            new Characters("Ninja", 195, new ArrayList<>(Arrays.asList(new Nunchucks(), new Punch(), new Kick()))),
+            new Characters("Wizard", 200, new ArrayList<>(Arrays.asList(new Wand(), new FireBall(), new Poison(), new Apple()))),
+            new Characters("Pirate", 185, new ArrayList<>(Arrays.asList(new Sword(), new Pistol(), new SmallRock()))));
     public String userName;
     public int step;
 
@@ -54,7 +54,7 @@ public class User extends Characters {
      */
     public void addRandomItem(){
         Random random= new Random();
-        int a= random.nextInt(4);
+        int a= random.nextInt(5);
 
         Item item = null;
         if(a==0){
@@ -69,6 +69,9 @@ public class User extends Characters {
         else if(a==3){
             item=new Sword();
         }
+        else {
+            item=new Headbutt();
+        }
 
         inventory.add(item);
 
@@ -81,8 +84,9 @@ public class User extends Characters {
      * @return null
      */
     public void displayInventory(){
+        System.out.println("You have: ");
         for(var a: inventory){
-            System.out.println("Item:\n"+a);
+            System.out.println(a);
         }
     }
 
