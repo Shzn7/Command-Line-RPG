@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class CreateFunctionalInventoryTest {
 
-    static User Alan = new User("bob", "Wizard", 100, 0, new ArrayList<Item>() );
+    static User Alan = new User("bob", "Wizard", 100, new ArrayList<Item>() );
 
     @Test(timeout = 1000)
     public void addIdentifiedItemTest() {

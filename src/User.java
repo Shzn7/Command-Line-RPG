@@ -11,15 +11,13 @@ public class User extends Characters {
     public String userName;
     public int step;
 
-    public User(String userName, String characterName, int HP, int step, List<Item> inventory) {
+    public User(String userName, String characterName, int HP, List<Item> inventory) {
         super(characterName, HP, inventory);
         this.userName = userName;
-        this.step = step;
         this.inventory = inventory;
         this.HP = HP;
         this.characterName = characterName;
     }
-
 
     // This constructor is used when selecting character at the beginning of the game
     public User (int characterSelection) {
@@ -28,7 +26,6 @@ public class User extends Characters {
         this.HP = temp.HP;
         this.inventory = temp.inventory;
         this.userName = "";
-        this.step = 0;
     }
 
     // This was on the whiteboard remove if unnecessary
@@ -104,6 +101,15 @@ public class User extends Characters {
         }
     }
 
+    /**
+     * Simple get method for the username
+     * @return the current userName
+     * @author Brad Froud (u7285455)
+     */
+    public String getUserName() {
+        return this.userName;
+    }
+
     // Sets the users username (different from character name)
     public void setUserName(String userName) {
         this.userName = userName;
@@ -111,7 +117,7 @@ public class User extends Characters {
 
     // Example of making a User please remove when editing how we will be properly doing this in a game scenario
     public static void main(String[] args) {
-        User bob = new User("bob", "Wizard", 100, 0, null);
+        User bob = new User("bob", "Wizard", 100, null);
         System.out.println(bob.userName);
     }
 }
