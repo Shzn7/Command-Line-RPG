@@ -20,6 +20,7 @@ public class User extends Characters {
         this.characterName = characterName;
     }
 
+
     // This constructor is used when selecting character at the beginning of the game
     public User (int characterSelection) {
         Characters temp = defaultCharacters.get(characterSelection);
@@ -45,6 +46,19 @@ public class User extends Characters {
     public void addItem(Item item){
         inventory.add(item);
         System.out.println("Congratulations, you have acquired" + item +"!");
+    }
+
+    /**
+     * Returns a string of the statistics of a given user for the purpose of informing the user of the stats of each character.
+     * @author Alex Basserabie
+     * @return String
+     */
+    public String introPrint() {
+        String str = characterName + " | HP: " + HP + " | Attacks: ";
+        for (Item i : inventory) {
+            str += i + ", ";
+        }
+        return str;
     }
 
     /***

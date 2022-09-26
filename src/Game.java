@@ -51,10 +51,11 @@ public class Game {
      */
     public static void setupCharacter() {
 
-        System.out.println("\nPick your character:");
+        System.out.println("\nAvailable Characters:");
         System.out.println("a) " + (new User(0)).introPrint());
         System.out.println("b) " + (new User(1)).introPrint());
         System.out.println("c) " + (new User(2)).introPrint());
+        System.out.println("\nWhat character would you like to select:");
 
         Scanner read = new Scanner(System.in);
         String input = read.nextLine();
@@ -79,102 +80,98 @@ public class Game {
     }
 
     public static void move(){
-        int lastRewardIndex = -1;
-        int lastEnemyIndex = -1;
+        //Index variables to ensure the user doesn't redo moves.
+    int lastRewardIndex = -1;
+    int lastEnemyIndex = -1;
 
-        while(true) {
-            System.out.println("----------------------------------------");
-            if (index >= gamePath.length()) {
-                System.out.println("You made it to the end, congrats!");
-                break;
-            }
+    while(true) {
+        System.out.println("----------------------------------------");
+        if (index >= gamePath.length()) {
+            System.out.println("You made it to the end, congrats!");
+            break;
+        }
 
-            System.out.println("What direction do you want to go? ");
+        System.out.println("What direction do you want to go? ");
 
-            /*
-            * Will end the game once the user has reached the end of the gameString
-             */
-            Boolean inputCorrect = false;
+        /*
+        * Will end the game once the user has reached the end of the gameString
+         */
+        Boolean inputCorrect = false;
 
-            Scanner read = new Scanner(System.in);
-            String input = read.nextLine();
-
-
-            /*
-             * Uses CommandHandler to interpret the command from the input text.
-             */
-            CommandsEnum command = new CommandHandler().processCommand(input);
-
-            if (command.equals(CommandsEnum.QUIT)) {break;}
-
-            //Temporary outlets for SAVE, LOAD, HELP, STATS
-            if (command.equals(CommandsEnum.SAVE) || command.equals(CommandsEnum.LOAD)
-                    || command.equals(CommandsEnum.HELP) || command.equals(CommandsEnum.STATS)) {
-                System.out.println(input + " is under construction, please try again.");}
-
-            //Display the user inventory's Items
-            if(command.equals(CommandsEnum.INV)){
-                user.displayInventory();
-                inputCorrect = true;
-            }
+        Scanner read = new Scanner(System.in);
+        String input = read.nextLine();
 
 
+        /*
+         * Uses CommandHandler to interpret the command from the input text.
+         */
+        CommandsEnum command = new CommandHandler().processCommand(input);
 
-            if (command.equals(CommandsEnum.NULL)) {
-                System.out.println(input + " was an invalid input, please try again.");
-                inputCorrect = true;
+        if (command.equals(CommandsEnum.QUIT)) {break;}
 
-            }
+        //Temporary outlets for SAVE, LOAD, HELP, STATS
+        if (command.equals(CommandsEnum.SAVE) || command.equals(CommandsEnum.LOAD)
+                || command.equals(CommandsEnum.HELP) || command.equals(CommandsEnum.STATS)) {
+            System.out.println(input + " is under construction, please try again.");}
 
-            /*
-             * Once it is determined that the user submitted a valid string, the program will find the current CommandEnum
-             * value of the gamePath, encounterPath and encounterType path, to determine whether the user moves forward, encounters
-             * an object or goes the wrong way.
-             */
+        //Display the user inventory's Items
+        if(command.equals(CommandsEnum.INV)){
+            user.displayInventory();
+            inputCorrect = true;
+        }
 
-            CommandsEnum correctPath = (new CommandHandler().processCommand(gamePath.charAt(index) + ""));
-            CommandsEnum eventPath = (new CommandHandler().processCommand(encounterPath.charAt(index) + ""));
-            CommandsEnum eventType = (new CommandHandler().processEncounter(encounterType.charAt(index)));
 
-            if (!inputCorrect) {
-                if (command.equals(correctPath)) {
-                    index++;
-                    System.out.println(input + " was the correct step, you continue on your journey.");
-                    if (index%5 == 0) {
-                        user.addRandomItem();
-                    }
 
-                } else {
-                    if (command.equals(eventPath)) {
-
-                        switch (eventType) {
-                            case ENEMY -> {
-                                if (lastEnemyIndex == index) {
-                                    System.out.println("You don't want to go back that way!");
-                                } else {
-                                    Interactions.battle(user);
-                                    lastEnemyIndex = index;
-                                }
-                            }
-                            case NPC -> Interactions.talkWithNPC();
-                            case REWARD -> {
-                                if (lastRewardIndex == index) {
-                                    System.out.println("You can't have another reward you cheeky bugger!");
-                                } else {
-                                    user.addRandomItem();
-                                    lastRewardIndex = index;
-                                }
-                            }
-                        }
-                    } else {
-                        System.out.println(input + " is the wrong way! Try again.");
-                    }
-                }
-            }
-
-            if (user.getHP() <= 0) {break; }
+        if (command.equals(CommandsEnum.NULL)) {
+            System.out.println(input + " was an invalid input, please try again.");
+            inputCorrect = true;
 
         }
+
+        /*
+         * Once it is determined that the user submitted a valid string, the program will find the current CommandEnum
+         * value of the gamePath, encounterPath and encounterType path, to determine whether the user moves forward, encounters
+         * an object or goes the wrong way.
+         */
+
+        CommandsEnum correctPath = (new CommandHandler().processCommand(gamePath.charAt(index) + ""));
+        CommandsEnum eventPath = (new CommandHandler().processCommand(encounterPath.charAt(index) + ""));
+        CommandsEnum eventType = (new CommandHandler().processEncounter(encounterType.charAt(index)));
+
+        if (!inputCorrect) {
+            if (command.equals(correctPath)) {
+                index++;
+                System.out.println(input + " was the correct step, you continue on your journey.");
+
+            } else {
+            if (command.equals(eventPath)) {
+                switch (eventType) {
+                    case ENEMY -> {
+                        if (lastEnemyIndex == index) {
+                            System.out.println("You don't want to go back that way!");
+                        } else {
+                            Interactions.battle(user);
+                            lastEnemyIndex = index;
+                        }
+                    }
+                    case NPC -> Interactions.talkWithNPC();
+                    case REWARD -> {
+                        if (lastRewardIndex == index) {
+                            System.out.println("You can't have another reward you cheeky bugger!");
+                        } else {
+                            user.addRandomItem();
+                            lastRewardIndex = index;
+                        }
+                    }
+                }
+            } else {
+                System.out.println(input + " is the wrong way! Try again.");
+            }}
+        }
+
+        if (user.getHP() <= 0) {break; }
+
     }
+}
 
 }

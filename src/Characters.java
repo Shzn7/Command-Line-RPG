@@ -24,14 +24,6 @@ public class Characters {
 
     }
 
-    public String introPrint() {
-        String str = characterName + " | HP: " + HP + " | Attacks: ";
-        for (Item i : inventory) {
-            str += i + ", ";
-        }
-        return str;
-    }
-
     public int getHP() {
         return HP;
     }
