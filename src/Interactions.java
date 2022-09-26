@@ -42,7 +42,7 @@ public class Interactions {
         //Loops until one character dies.
         while (!playerDead && !enemyDead) {
 
-            System.out.println("----------------------------------------");
+            System.out.println(Game.DEFAULT_LINE_BREAK);
             playerVsEnemy();
             if (enemyDead) {break;}
 
@@ -53,7 +53,7 @@ public class Interactions {
                 e.printStackTrace();
             }
 
-            System.out.println("----------------------------------------");
+            System.out.println(Game.DEFAULT_LINE_BREAK);
             enemyVsPlayer();
             if (playerDead) {break;}
         }
@@ -135,7 +135,7 @@ public class Interactions {
 
 
         Item chosen = inventory.get(Integer.parseInt(input));
-        System.out.println("----------------------------------------");
+        System.out.println(Game.DEFAULT_LINE_BREAK);
 
         //There are two different dynamics, depending on whether the user chose to use a weapon or healing item.
         if (chosen.isWeapon) {
