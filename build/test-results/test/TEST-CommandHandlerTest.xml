@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="CommandHandlerTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2022-09-26T11:25:50" hostname="SHZN-DELLXPS" time="0.013">
+  <properties/>
+  <testcase name="northSouthEastWestPCTest" classname="CommandHandlerTest" time="0.008"/>
+  <testcase name="PETest" classname="CommandHandlerTest" time="0.001"/>
+  <testcase name="northSouthEastWestVariationsPCTest" classname="CommandHandlerTest" time="0.0"/>
+  <testcase name="otherEncounterPCTest" classname="CommandHandlerTest" time="0.001"/>
+  <testcase name="PEExceptionTest" classname="CommandHandlerTest" time="0.001"/>
+  <testcase name="PCExceptionTest" classname="CommandHandlerTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

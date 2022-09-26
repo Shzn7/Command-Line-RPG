@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="CreateFunctionalInventoryTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2022-09-26T11:25:50" hostname="SHZN-DELLXPS" time="0.012">
+  <properties/>
+  <testcase name="addIdentifiedItemTest" classname="CreateFunctionalInventoryTest" time="0.011"/>
+  <testcase name="addRandomItemTest" classname="CreateFunctionalInventoryTest" time="0.001"/>
+  <system-out><![CDATA[Congratulations, you have acquiredApple!
+Congratulations, you have acquired Headbutt!
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

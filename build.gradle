@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+
+    test {
+        java {
+            srcDirs = ['test']
+        }
+    }
+}
+
+test {
+    testLogging {
+        events "PASSED", "SKIPPED", "FAILED"
+    }
+}
+
+dependencies {
+    implementation 'junit:junit:4.13.1'
+    implementation files("JSON/gson-2.8.6.jar")
+    implementation files("JSON/json-simple-1.1.jar")
+}
