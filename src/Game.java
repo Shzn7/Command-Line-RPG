@@ -1,11 +1,13 @@
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Game {
     private static final String JSON_FILE = "src/gameConfiguration.json";
     private static User user;
+    private static SaveLoad saveLoadHandler;
 
     /**
      * Variables to store all game configuration data
@@ -18,30 +20,76 @@ public class Game {
     /**
      * Index to store the place along the gameString the user is at.
      */
-    static int index = 0;
+    private static int index = 0;
 
     public static void main(String[] args) {
         File gameConfigFile = new File(JSON_FILE);
         LoadGameConfiguration gameConfig = new LoadGameConfiguration().setGameConfigFromJsonFile(gameConfigFile);
+        saveLoadHandler = new SaveLoad();
 
         System.out.println("Game Path     : " + gameConfig.getGamePath());
         System.out.println("Encounter Path: " + gameConfig.getEncounterPath());
         System.out.println("Encounter Type: " + gameConfig.getEncounterType());
 
+        // Asking the user if they would like to load from save file
+        boolean didLoad = handleLoadRequest();
 
-        setupCharacter();
-        // Setting our username
-        System.out.println("\nChoose your username:");
-        Scanner read = new Scanner(System.in);
-        String username = read.nextLine();
-        user.setUserName(username);
-        System.out.println("Your username is "+user.userName);
+        // if the user decided not to load from save game, run through normal setup
+        if(!didLoad)
+        {
+            setupCharacter();
+            // Setting our username
+            System.out.println("\nChoose your username:");
+            Scanner read = new Scanner(System.in);
+            String username = read.nextLine();
+            user.setUserName(username);
+            System.out.println("Your username is "+user.userName);
 
-        gamePath =  gameConfig.getGamePath();
-        encounterPath = gameConfig.getEncounterPath();
-        encounterType = gameConfig.getEncounterType();
+            gamePath =  gameConfig.getGamePath();
+            encounterPath = gameConfig.getEncounterPath();
+            encounterType = gameConfig.getEncounterType();
+        }
 
         move();
+    }
+
+    /**
+     * Function to handle the user requesting to load from a save game
+     * after interpreting whether they would like to.
+     *
+     * @return boolean for whether the user did (true) or did not (false) load.
+     *
+     * @author Brad Froud (u7285455)
+     */
+    private static boolean handleLoadRequest()
+    {
+        System.out.println("\nLoad from save file? (Y/N)");
+        Scanner read = new Scanner(System.in);
+        String loadResponse = read.nextLine();
+
+        switch (loadResponse.toUpperCase())
+        {
+            case "Y", "YES" ->
+            {
+                System.out.println("\nLoading...");
+                // Initiate the user variable so that loading doesn't crash the game
+                user = new User("System", "tempChar", 1, new ArrayList<>(List.of(new Punch())));
+                loadHelper();
+                System.out.println("Done!");
+                return true;
+            }
+            case "N", "NO" ->
+            {
+                System.out.println("\nContinuing to new game...");
+                return false;
+            }
+            default ->
+            {
+                System.out.println("\nNot a valid input. Please try again.");
+                handleLoadRequest();
+            }
+        }
+        return false;
     }
 
     /**
@@ -81,6 +129,10 @@ public class Game {
         }
     }
 
+    /**
+     *
+     * @authors collaborative effort
+     */
     public static void move(){
 
         while(true) {
@@ -104,10 +156,31 @@ public class Game {
 
             if (command.equals(CommandsEnum.QUIT)) {break;}
 
-            //Temporary outlets for SAVE, LOAD, HELP, STATS
-            if (command.equals(CommandsEnum.SAVE) || command.equals(CommandsEnum.LOAD)
-                    || command.equals(CommandsEnum.HELP) || command.equals(CommandsEnum.STATS)) {
+            //Temporary outlets for HELP, STATS
+            if (command.equals(CommandsEnum.HELP) || command.equals(CommandsEnum.STATS)){
                 System.out.println(input + " is under construction, please try again.");}
+
+            // Save the game to file
+            if(command.equals(CommandsEnum.SAVE))
+            {
+                System.out.println("\nSaving...");
+                File gameConfigFile = new File(JSON_FILE);
+                // the first parameter passed here below should be changed to some form
+                // of concatenation of the three path strings if procedurally (or
+                // otherwise) generated strings are implemented.
+                saveLoadHandler.saveGameStateToFile(new LoadGameConfiguration().setGameConfigFromJsonFile(gameConfigFile), index, user);
+                inputCorrect = true;
+                System.out.println("Done!");
+            }
+
+            // Load the game from file
+            if(command.equals(CommandsEnum.LOAD))
+            {
+                System.out.println("\nLoading...");
+                loadHelper();
+                inputCorrect = true;
+                System.out.println("Done!");
+            }
 
             //Display the user inventory's Items
             if(command.equals(CommandsEnum.INV)){
@@ -155,5 +228,63 @@ public class Game {
 
         }
     }
+
+    /**
+     * A helper method to load saved data from file using external class
+     * then update the appropriate variables in this class.
+     *
+     * @author Brad Froud (u7285455)
+     */
+    private static void loadHelper()
+    {
+        ArrayList<Object> savedGameList = saveLoadHandler.loadGameStateFromFile();
+        // Update path variables
+        setGamePath((String) savedGameList.get(0));
+        setEncounterPath((String) savedGameList.get(1));
+        setEncounterType((String) savedGameList.get(2));
+        // Update index
+        setIndex((int) savedGameList.get(3));
+        // Update user variables
+        getUser().setUserName((String) savedGameList.get(4));
+        getUser().setInventory((List<Item>) savedGameList.get(5));
+        getUser().setHP((int) savedGameList.get(6));
+        getUser().setCharacterName((String) savedGameList.get(7));
+    }
+
+    /**
+     * Setter method to set the correctGamePath
+     * @author Brad Froud (u7285455)
+     */
+    public static void setGamePath(String input) { gamePath = input; }
+
+    /**
+     * Setter method to set the encounterPath
+     * @author Brad Froud (u7285455)
+     */
+    public static void setEncounterPath(String input) {
+        encounterPath = input;
+    }
+
+    /**
+     * Setter method to set the encounterType
+     * @author Brad Froud (u7285455)
+     */
+    public static void setEncounterType(String input) {
+        encounterType = input;
+    }
+
+    /**
+     * Setter method to set the index/step value
+     * @author Brad Froud (u7285455)
+     */
+    public static void setIndex(int input) {
+        index = input;
+    }
+
+    /**
+     * Getter method to retrieve a reference to the user
+     * @author Brad Froud (u7285455)
+     */
+    public static User getUser() { return user; }
 
 }
