@@ -14,6 +14,15 @@ public class Characters {
     public Characters() {
 
     }
+    public void decrementInv(Item item) {
+        int index = inventory.indexOf(item);
+        if (inventory.get(index).getUsage() <= 1) {
+            inventory.remove(item);
+        } else {
+            inventory.get(index).usage--;
+        }
+
+    }
 
     public int getHP() {
         return HP;

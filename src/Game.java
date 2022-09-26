@@ -99,27 +99,25 @@ public class Game {
      */
     public static void setupCharacter() {
 
-        System.out.println("\nPick your character:");
-        System.out.println("a) Ninja");
-        System.out.println("  HP: 95 Attacks: Nunchucks, Punch, Kick");
-        System.out.println("b) Wizard");
-        System.out.println("  HP: 100 Attacks: Wand, Cat, Potion");
-        System.out.println("c) Pirate");
-        System.out.println("  HP: 85  Attacks: Sword, Pistol, Small Rock");
+        System.out.println("\nAvailable Characters:");
+        System.out.println("a) " + (new User(0)).introPrint());
+        System.out.println("b) " + (new User(1)).introPrint());
+        System.out.println("c) " + (new User(2)).introPrint());
+        System.out.println("\nWhat character would you like to select:");
 
         Scanner read = new Scanner(System.in);
         String input = read.nextLine();
         switch (input.toUpperCase()) {
             case "A", "NINJA" -> {
-                System.out.println("you picked NINJA");
+                System.out.println("You picked NINJA");
                 user = new User(0);
             }
             case "B", "WIZARD" -> {
-                System.out.println("you picked WIZARD");
+                System.out.println("You picked WIZARD");
                 user = new User(1);
             }
             case "C", "PIRATE" -> {
-                System.out.println("you picked PIRATE");
+                System.out.println("You picked PIRATE");
                 user = new User(2);
             }
             default -> {
@@ -134,27 +132,34 @@ public class Game {
      * @authors collaborative effort
      */
     public static void move(){
+        //Index variables to ensure the user doesn't redo moves.
+    int lastRewardIndex = -1;
+    int lastEnemyIndex = -1;
 
-        while(true) {
-            /*
-            * Will end the game once the user has reached the end of the gameString
-             */
-            Boolean inputCorrect = false;
-            if (index >= gamePath.length()) {
-                System.out.println("You made it to the end, congrats!");
-                break;
-            }
+    while(true) {
+        System.out.println("----------------------------------------");
+        if (index >= gamePath.length()) {
+            System.out.println("You made it to the end, congrats!");
+            break;
+        }
 
-            Scanner read = new Scanner(System.in);
-            String input = read.nextLine();
+        System.out.println("What direction do you want to go? ");
+
+        /*
+        * Will end the game once the user has reached the end of the gameString
+         */
+        Boolean inputCorrect = false;
+
+        Scanner read = new Scanner(System.in);
+        String input = read.nextLine();
 
 
-            /*
-             * Uses CommandHandler to interpret the command from the input text.
-             */
-            CommandsEnum command = new CommandHandler().processCommand(input);
+        /*
+         * Uses CommandHandler to interpret the command from the input text.
+         */
+        CommandsEnum command = new CommandHandler().processCommand(input);
 
-            if (command.equals(CommandsEnum.QUIT)) {break;}
+        if (command.equals(CommandsEnum.QUIT)) {break;}
 
             //Temporary outlets for HELP, STATS
             if (command.equals(CommandsEnum.HELP) || command.equals(CommandsEnum.STATS)){
@@ -190,41 +195,54 @@ public class Game {
 
 
 
-            if (command.equals(CommandsEnum.NULL)) {
-                System.out.println(input + " was an invalid input, please try again.");
-                inputCorrect = true;
+        if (command.equals(CommandsEnum.NULL)) {
+            System.out.println(input + " was an invalid input, please try again.");
+            inputCorrect = true;
 
-            }
+        }
 
-            /*
-             * Once it is determined that the user submitted a valid string, the program will find the current CommandEnum
-             * value of the gamePath, encounterPath and encounterType path, to determine whether the user moves forward, encounters
-             * an object or goes the wrong way.
-             */
+        /*
+         * Once it is determined that the user submitted a valid string, the program will find the current CommandEnum
+         * value of the gamePath, encounterPath and encounterType path, to determine whether the user moves forward, encounters
+         * an object or goes the wrong way.
+         */
 
-            CommandsEnum correctPath = (new CommandHandler().processCommand(gamePath.charAt(index) + ""));
-            CommandsEnum eventPath = (new CommandHandler().processCommand(encounterPath.charAt(index) + ""));
-            CommandsEnum eventType = (new CommandHandler().processEncounter(encounterType.charAt(index)));
+        CommandsEnum correctPath = (new CommandHandler().processCommand(gamePath.charAt(index) + ""));
+        CommandsEnum eventPath = (new CommandHandler().processCommand(encounterPath.charAt(index) + ""));
+        CommandsEnum eventType = (new CommandHandler().processEncounter(encounterType.charAt(index)));
 
-            if (!inputCorrect) {
-                if (command.equals(correctPath)) {
-                    index++;
-                    System.out.println(input + " was the correct path, you continue on your journey.");
-                } else {
-                    if (command.equals(eventPath)) {
+        if (!inputCorrect) {
+            if (command.equals(correctPath)) {
+                index++;
+                System.out.println(input + " was the correct step, you continue on your journey.");
 
-                        switch (eventPath) {
-                            case ENEMY -> Interactions.battle();
-                            case NPC -> Interactions.talkWithNPC();
-                            case REWARD -> user.addRandomItem();
+            } else {
+            if (command.equals(eventPath)) {
+                switch (eventType) {
+                    case ENEMY -> {
+                        if (lastEnemyIndex == index) {
+                            System.out.println("You don't want to go back that way!");
+                        } else {
+                            Interactions.battle(user);
+                            lastEnemyIndex = index;
                         }
-
-                        System.out.println(input + " was the encounter path, you would have a " + eventType);
-                    } else {
-                        System.out.println(input + " is the wrong way! Try again.");
+                    }
+                    case NPC -> Interactions.talkWithNPC();
+                    case REWARD -> {
+                        if (lastRewardIndex == index) {
+                            System.out.println("You can't have another reward you cheeky bugger!");
+                        } else {
+                            user.addRandomItem();
+                            lastRewardIndex = index;
+                        }
                     }
                 }
-            }
+            } else {
+                System.out.println(input + " is the wrong way! Try again.");
+            }}
+        }
+
+        if (user.getHP() <= 0) {break; }
 
         }
     }
