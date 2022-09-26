@@ -52,8 +52,12 @@ public class User extends Characters {
      */
     public String introPrint() {
         String str = characterName + " | HP: " + HP + " | Attacks: ";
-        for (Item i : inventory) {
-            str += i + ", ";
+
+        for (int i = 0; i < inventory.size(); i++) {
+            str += inventory.get(i);
+            if (i != inventory.size()-1) {
+                str += ", ";
+            }
         }
         return str;
     }

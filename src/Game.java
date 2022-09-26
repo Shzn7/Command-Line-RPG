@@ -161,37 +161,43 @@ public class Game {
 
         if (command.equals(CommandsEnum.QUIT)) {break;}
 
-            //Temporary outlets for HELP, STATS
-            if (command.equals(CommandsEnum.HELP) || command.equals(CommandsEnum.STATS)){
-                System.out.println(input + " is under construction, please try again.");}
+        //Temporary outlets for HELP, STATS
+        if (command.equals(CommandsEnum.HELP)){
+            System.out.println(input + " is under construction, please try again.");}
 
-            // Save the game to file
-            if(command.equals(CommandsEnum.SAVE))
-            {
-                System.out.println("\nSaving...");
-                File gameConfigFile = new File(JSON_FILE);
-                // the first parameter passed here below should be changed to some form
-                // of concatenation of the three path strings if procedurally (or
-                // otherwise) generated strings are implemented.
-                saveLoadHandler.saveGameStateToFile(new LoadGameConfiguration().setGameConfigFromJsonFile(gameConfigFile), index, user);
-                inputCorrect = true;
-                System.out.println("Done!");
-            }
+        // Save the game to file
+        if(command.equals(CommandsEnum.SAVE))
+        {
+            System.out.println("\nSaving...");
+            File gameConfigFile = new File(JSON_FILE);
+            // the first parameter passed here below should be changed to some form
+            // of concatenation of the three path strings if procedurally (or
+            // otherwise) generated strings are implemented.
+            saveLoadHandler.saveGameStateToFile(new LoadGameConfiguration().setGameConfigFromJsonFile(gameConfigFile), index, user);
+            inputCorrect = true;
+            System.out.println("Done!");
+        }
 
-            // Load the game from file
-            if(command.equals(CommandsEnum.LOAD))
-            {
-                System.out.println("\nLoading...");
-                loadHelper();
-                inputCorrect = true;
-                System.out.println("Done!");
-            }
+        // Load the game from file
+        if(command.equals(CommandsEnum.LOAD))
+        {
+            System.out.println("\nLoading...");
+            loadHelper();
+            inputCorrect = true;
+            System.out.println("Done!");
+        }
 
-            //Display the user inventory's Items
-            if(command.equals(CommandsEnum.INV)){
-                user.displayInventory();
-                inputCorrect = true;
-            }
+        //Display the user inventory's Items
+        if(command.equals(CommandsEnum.INV)){
+            user.displayInventory();
+            inputCorrect = true;
+        }
+
+        //Display the user's statistics
+        if(command.equals(CommandsEnum.STATS)){
+            System.out.println(user.introPrint());
+            inputCorrect = true;
+        }
 
 
 
