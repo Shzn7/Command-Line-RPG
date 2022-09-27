@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class Game {
     private static final String JSON_FILE = "src/gameConfiguration.json";
+    public static final String DEFAULT_LINE_BREAK = "----------------------------------------";
     private static User user;
     private static SaveLoad saveLoadHandler;
 
@@ -31,6 +32,7 @@ public class Game {
         System.out.println("Encounter Path: " + gameConfig.getEncounterPath());
         System.out.println("Encounter Type: " + gameConfig.getEncounterType());
 
+
         // Asking the user if they would like to load from save file
         boolean didLoad = handleLoadRequest();
 
@@ -49,7 +51,7 @@ public class Game {
             encounterPath = gameConfig.getEncounterPath();
             encounterType = gameConfig.getEncounterType();
         }
-
+        HelpCall.helpCall();
         move();
     }
 
@@ -137,7 +139,7 @@ public class Game {
     int lastEnemyIndex = -1;
 
     while(true) {
-        System.out.println("----------------------------------------");
+        System.out.println(DEFAULT_LINE_BREAK);
         if (index >= gamePath.length()) {
             System.out.println("You made it to the end, congrats!");
             break;
@@ -163,7 +165,9 @@ public class Game {
 
         //Temporary outlets for HELP, STATS
         if (command.equals(CommandsEnum.HELP)){
-            System.out.println(input + " is under construction, please try again.");}
+            HelpCall.helpCall();
+            inputCorrect = true;
+        }
 
         // Save the game to file
         if(command.equals(CommandsEnum.SAVE))
