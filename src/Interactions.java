@@ -189,8 +189,7 @@ public class Interactions {
 
 
 
-    public static void talkWithNPC(){
-        System.out.println("under construction!");
-    }
+
+
 
 }
