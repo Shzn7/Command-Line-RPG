@@ -4,9 +4,13 @@ public class JosephaNPC extends NPC{
     public JosephaNPC(String userName) {
         this.usrN=userName;
 
-
     }
 
+    /***
+     * This method enables the player to talk to NPC Josepha.
+     * @return null
+     * @author ZHUOJUN XIAO
+     */
     public void chat(){
         System.out.println("Hello "+usrN+"\n"+
                 "The dragon Galakrond has invaded the village with his army of demons.\n" +
@@ -17,8 +21,5 @@ public class JosephaNPC extends NPC{
 
     }
 
-    public void checkAnswer(String answer){
 
-
-    }
 }

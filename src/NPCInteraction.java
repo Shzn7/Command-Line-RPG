@@ -2,6 +2,15 @@ public class NPCInteraction {
 
     static User user;
 
+
+    /***
+     * This method enables player and npc interaction in Game;
+     * The npc will talk to the player and give the player a puzzle that will give the player a random reward if they can solve it
+     * @author ZHUOJUN XIAO
+     * @param givenUser user's name
+     * @param amountOfCalls Count the number of times the player has encountered an NPC, making sure it is different each time.
+     * @return null
+     */
     public static void talkWithNPC(User givenUser, int amountOfCalls) {
         //The first NPC the player will encounter.
         if (amountOfCalls==1){
