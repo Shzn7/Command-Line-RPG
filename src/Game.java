@@ -137,6 +137,7 @@ public class Game {
         //Index variables to ensure the user doesn't redo moves.
     int lastRewardIndex = -1;
     int lastEnemyIndex = -1;
+    int lastNPCIndex= -1;
 
     while(true) {
         System.out.println("----------------------------------------");
@@ -231,9 +232,14 @@ public class Game {
                     }
                     //When a player meets an NPC, the NPC will talk to the player
                     case NPC ->{
-                        NPCCalls++;
-                        if (NPCInteraction.talkWithNPC(user, NPCCalls)){
-                        }}
+                        if (lastNPCIndex == index) {
+                            System.out.println("The NPC walked away, can't go back that direction!");
+                        } else {
+                            lastNPCIndex =index;
+                            NPCCalls++;
+                            NPCInteraction.talkWithNPC(user, NPCCalls);
+                            }
+                        }
 
                     case REWARD -> {
                         if (lastRewardIndex == index) {

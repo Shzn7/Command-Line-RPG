@@ -2,7 +2,8 @@ public class NPCInteraction {
 
     static User user;
 
-    public static boolean talkWithNPC(User givenUser, int amountOfCalls) {
+    public static void talkWithNPC(User givenUser, int amountOfCalls) {
+        //The first NPC the player will encounter.
         if (amountOfCalls==1){
             user=givenUser;
             JosephaNPC josephaNPC=new JosephaNPC(user.getUserName());
@@ -10,6 +11,7 @@ public class NPCInteraction {
             user.addRandomItem();
 
         }
+        //The Second NPC the player will encounter.
         if(amountOfCalls==2){
         user = givenUser;
 
@@ -23,6 +25,7 @@ public class NPCInteraction {
             System.out.println("Your answer is incorrect\n");
         }
 
+        //The Final NPC the player will encounter.
         if (amountOfCalls==3){
             user=givenUser;
             WuKongNPC wuKongNPC=new WuKongNPC(user.getUserName());
@@ -39,7 +42,6 @@ public class NPCInteraction {
         }
         }
 
-        return false;
     }
 
 
