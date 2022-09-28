@@ -8,7 +8,7 @@ public class JosephaNPC extends NPC{
     }
 
     public void chat(){
-        System.out.println("Hello Warrior"+ usrN +"\n"+
+        System.out.println("Hello "+usrN+"\n"+
                 "The dragon Galakrond has invaded the village with his army of demons.\n" +
                 "The village was plunged into war and chaos.\n" +
                 "Please take up your weapons and lead the villagers in the fight against the demon army and slay the evil dragon! \n" +

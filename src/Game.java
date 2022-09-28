@@ -233,7 +233,6 @@ public class Game {
                     case NPC ->{
                         NPCCalls++;
                         if (NPCInteraction.talkWithNPC(user, NPCCalls)){
-                            index++;
                         }}
 
                     case REWARD -> {

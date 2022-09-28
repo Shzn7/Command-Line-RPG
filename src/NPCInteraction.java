@@ -27,6 +27,7 @@ public class NPCInteraction {
             user=givenUser;
             WuKongNPC wuKongNPC=new WuKongNPC(user.getUserName());
             wuKongNPC.chat();
+
             if(wuKongNPC.getAddItem()){
                 System.out.println("Your answer is correct\n");
                 user.addRandomItem();
