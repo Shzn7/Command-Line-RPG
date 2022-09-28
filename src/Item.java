@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 
 public abstract class Item {
+
+
     @Override
     public String toString() {
         return name;
@@ -152,14 +154,6 @@ class Apple extends Item {
     }
 }
 
-class Fire extends Item {
-    public Fire() {
-        name = "Fire";
-        damage = 20;
-        usage = 2;
-        isWeapon = true;
-    }
-}
 
 class EvilThoughts extends Item {
     public EvilThoughts() {

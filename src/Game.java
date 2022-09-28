@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Game {
-    private static final String JSON_FILE = "src/gameConfiguration.json";
+    private static final String JSON_FILE = "src/Saves/gameConfiguration.json";
     public static final String DEFAULT_LINE_BREAK = "----------------------------------------";
     private static User user;
     private static SaveLoad saveLoadHandler;
@@ -16,6 +16,7 @@ public class Game {
     private static String gamePath  = "";
     private static String encounterPath  = "";
     private static String encounterType  = "";
+
 
 
     /**
@@ -30,20 +31,20 @@ public class Game {
         LoadGameConfiguration gameConfig = new LoadGameConfiguration().setGameConfigFromJsonFile(gameConfigFile);
         saveLoadHandler = new SaveLoad();
 
-        System.out.println("Game Path     : " + gameConfig.getGamePath());
-        System.out.println("Encounter Path: " + gameConfig.getEncounterPath());
-        System.out.println("Encounter Type: " + gameConfig.getEncounterType());
-
-
         // Asking the user if they would like to load from save file
         boolean didLoad = handleLoadRequest();
 
         // if the user decided not to load from save game, run through normal setup
         if(!didLoad)
         {
-            setupCharacter();
+            System.out.println(DEFAULT_LINE_BREAK);
+            if (Gamemode()) {
+                System.out.println(DEFAULT_LINE_BREAK);
+                setupCharacter();
+            }
+            System.out.println(DEFAULT_LINE_BREAK);
             // Setting our username
-            System.out.println("\nChoose your username:");
+            System.out.println("Choose your username:");
             Scanner read = new Scanner(System.in);
             String username = read.nextLine();
             user.setUserName(username);
@@ -52,8 +53,12 @@ public class Game {
             gamePath =  gameConfig.getGamePath();
             encounterPath = gameConfig.getEncounterPath();
             encounterType = gameConfig.getEncounterType();
+
+            HelpCall.helpCall();
+        } else {
+            System.out.println(user.introPrint());
         }
-        HelpCall.helpCall();
+
         move();
     }
 
@@ -67,7 +72,8 @@ public class Game {
      */
     private static boolean handleLoadRequest()
     {
-        System.out.println("\nLoad from save file? (Y/N)");
+        System.out.println(DEFAULT_LINE_BREAK);
+        System.out.println("Load from save file? (Y/N)");
         Scanner read = new Scanner(System.in);
         String loadResponse = read.nextLine();
 
@@ -75,21 +81,23 @@ public class Game {
         {
             case "Y", "YES" ->
             {
-                System.out.println("\nLoading...");
                 // Initiate the user variable so that loading doesn't crash the game
-                user = new User("System", "tempChar", 1, new ArrayList<>(List.of(new Punch())));
-                loadHelper();
+                user = new User("System", "tempChar", 1, new ArrayList<>(List.of(new Punch())),GamemodesEnum.SURVIVAL);
+                if (!loadHelper()){
+                    return false;
+                };
                 System.out.println("Done!");
+
                 return true;
             }
             case "N", "NO" ->
             {
-                System.out.println("\nContinuing to new game...");
+                System.out.println("Continuing to new game...");
                 return false;
             }
             default ->
             {
-                System.out.println("\nNot a valid input. Please try again.");
+                System.out.println("Not a valid input. Please try again.");
                 handleLoadRequest();
             }
         }
@@ -113,15 +121,12 @@ public class Game {
         String input = read.nextLine();
         switch (input.toUpperCase()) {
             case "A", "NINJA" -> {
-                System.out.println("You picked NINJA");
                 user = new User(0);
             }
             case "B", "WIZARD" -> {
-                System.out.println("You picked WIZARD");
                 user = new User(1);
             }
             case "C", "PIRATE" -> {
-                System.out.println("You picked PIRATE");
                 user = new User(2);
             }
             default -> {
@@ -129,6 +134,42 @@ public class Game {
                 setupCharacter();
             }
         }
+        System.out.println("You picked " +user.getCharacterName() +". ");
+        System.out.println(DEFAULT_LINE_BREAK);
+    }
+
+
+    public static boolean Gamemode() {
+        System.out.println("Available Gamemodes:");
+        System.out.println("1) Survival, where you have the choice of a few default characters, with limited life and attacks." +
+                "\n   For those who want a challenge.");
+        System.out.println("2) OP Mode, where you play a character with 1000 HP and all the weapons available. " +
+                "\n   For those who think life is hard enough as it is.");
+
+        System.out.println("\nWhat gamemode would you like to select:");
+
+        Scanner read = new Scanner(System.in);
+        String input = read.nextLine();
+        switch (input.toUpperCase()) {
+            case "1", "SURVIVAL" -> {
+                return true;
+            }
+            case "2", "OP" -> {
+                List<Item> everything = new ArrayList<>(Arrays.asList(new EvilThoughts(), new FireBall(),
+                        new Headbutt(), new Kick(), new Lawsuit(), new Moan(), new Nunchucks(), new Pistol(), new Punch(), new SelfDrivingCar(),
+                        new SmallRock(), new StockMarket(), new Sword(), new TwitterAttack(), new Wand(), new ZombieBite()));
+
+
+                user = new User("", "OP Character", 1000, everything, GamemodesEnum.OPMODE);
+                return false;
+            }
+            default -> {
+                System.out.println("Not a valid input try again");
+                Gamemode();
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -276,9 +317,13 @@ public class Game {
      *
      * @author Brad Froud (u7285455)
      */
-    private static void loadHelper()
+    private static boolean loadHelper()
     {
         ArrayList<Object> savedGameList = saveLoadHandler.loadGameStateFromFile();
+
+        if (savedGameList.size() == 0) {
+            return false;
+        }
         // Update path variables
         setGamePath((String) savedGameList.get(0));
         setEncounterPath((String) savedGameList.get(1));
@@ -290,6 +335,7 @@ public class Game {
         getUser().setInventory((List<Item>) savedGameList.get(5));
         getUser().setHP((int) savedGameList.get(6));
         getUser().setCharacterName((String) savedGameList.get(7));
+        return true;
     }
 
     /**

@@ -6,14 +6,10 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Testing Class to verify CommandHandler.java methods
- *
- * @author Alex Basserabie
- */
+
 public class CreateFunctionalInventoryTest {
 
-    static User Alan = new User("bob", "Wizard", 100, new ArrayList<Item>() );
+    static User Alan = new User("bob", "Wizard", 100, new ArrayList<Item>(), GamemodesEnum.SURVIVAL );
 
     @Test(timeout = 1000)
     public void addIdentifiedItemTest() {

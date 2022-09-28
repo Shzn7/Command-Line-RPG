@@ -9,14 +9,15 @@ public class User extends Characters {
             new Characters("Wizard", 200, new ArrayList<>(Arrays.asList(new Wand(), new FireBall(), new Poison(), new Apple()))),
             new Characters("Pirate", 185, new ArrayList<>(Arrays.asList(new Sword(), new Pistol(), new SmallRock()))));
     public String userName;
-    public int step;
+    public GamemodesEnum gamemode;
 
-    public User(String userName, String characterName, int HP, List<Item> inventory) {
+    public User(String userName, String characterName, int HP, List<Item> inventory, GamemodesEnum gm) {
         super(characterName, HP, inventory);
         this.userName = userName;
         this.inventory = inventory;
         this.HP = HP;
         this.characterName = characterName;
+        this.gamemode = gm;
     }
 
     // This constructor is used when selecting character at the beginning of the game
@@ -26,12 +27,9 @@ public class User extends Characters {
         this.HP = temp.HP;
         this.inventory = temp.inventory;
         this.userName = "";
+        this.gamemode = GamemodesEnum.SURVIVAL;
     }
 
-    // This was on the whiteboard remove if unnecessary
-    public void setAttack() {
-
-    }
 
     /**
      * This method is used to add an already identified item to the character's inventory and tells the player what items have been obtained.
@@ -61,6 +59,8 @@ public class User extends Characters {
         }
         return str;
     }
+
+
 
     /***
      * This method is used to add a random item to a character's inventory (a random reward) and tells the player what items have been obtained.
@@ -119,9 +119,8 @@ public class User extends Characters {
         this.userName = userName;
     }
 
-    // Example of making a User please remove when editing how we will be properly doing this in a game scenario
-    public static void main(String[] args) {
-        User bob = new User("bob", "Wizard", 100, null);
-        System.out.println(bob.userName);
+    public GamemodesEnum getGamemode() {
+        return gamemode;
     }
+
 }

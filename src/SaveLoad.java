@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,6 +24,7 @@ import java.util.List;
 public class SaveLoad
 {
     public SaveLoad() {} // empty constructor for completeness
+    private static final String JSON_FILE = "src/Saves/saveGames.json";
 
     /**
      * A method to save the current state of the game and the user
@@ -72,7 +74,7 @@ public class SaveLoad
         // saving the whole array to the file below.
 
         // Generate file
-        try (FileWriter saveFile = new FileWriter("saveGames.json"))
+        try (FileWriter saveFile = new FileWriter(JSON_FILE))
         {
             saveFile.write(saveData.toJSONString());
             saveFile.flush();
@@ -102,7 +104,7 @@ public class SaveLoad
 
         JSONParser parser = new JSONParser();
 
-        try(FileReader reader = new FileReader("saveGames.json"))
+        try(FileReader reader = new FileReader(JSON_FILE))
         {
             // Read the file
             Object obj = parser.parse(reader);
@@ -129,8 +131,7 @@ public class SaveLoad
         }
         catch (FileNotFoundException e)
         {
-            System.out.println("\nThere was no save file found.");
-            System.out.println("Error message: " + e);
+            System.out.println("There was no save file found.");
             System.out.println("Please save a game first.");
         }
         catch (IOException | ParseException e)
@@ -140,8 +141,6 @@ public class SaveLoad
             System.out.println("Please try again later.");
         }
 
-        // Outputs the data to be loaded every time a save game is restored.
-        System.out.println(outputList); // remove if this is not desired
         return outputList;
     }
 
@@ -176,28 +175,23 @@ public class SaveLoad
      * @param item a single inventory item in JSONObject format
      * @param outList list to add interpreted item to
      *
-     * @author Brad Froud
+     * @author Brad Froud & Alex Basserabie
      */
     private void captureItem(JSONObject item, List<Item> outList)
     {
         String itemName = (String) item.get("itemName");
 
-        // this switch is poor code style, but without external change,
-        // this is the best solution I could come up with
-        switch (itemName.toUpperCase())
-        {
-            case "SWORD" -> outList.add(new Sword());
-            case "PISTOL" -> outList.add(new Pistol());
-            case "WAND" -> outList.add(new Wand());
-            case "FIREBALL" -> outList.add(new FireBall());
-            case "POISON" -> outList.add(new Poison());
-            case "HEALTHPOTION" -> outList.add(new HealthPotion());
-            case "SMALLROCK" -> outList.add(new SmallRock());
-            case "NUNCHUCKS" -> outList.add(new Nunchucks());
-            case "PUNCH" -> outList.add(new Punch());
-            case "KICK" -> outList.add(new Kick());
-            case "APPLE" -> outList.add(new Apple());
-            default -> System.out.println("Error while loading: Invalid item detected in saved inventory.");
+        List<Item> everything = new ArrayList<>(Arrays.asList(new EvilThoughts(), new FireBall(),
+                new Headbutt(), new Kick(), new Lawsuit(), new Moan(), new Nunchucks(), new Pistol(), new Punch(), new SelfDrivingCar(),
+                new SmallRock(), new StockMarket(), new Sword(), new TwitterAttack(), new Wand(), new ZombieBite()));
+
+        boolean found = false;
+        for (Item i : everything) {
+            if (itemName.equals(i.toString())) outList.add(i);
+            found = true;
         }
+
+        if (!found) System.out.println("Error while loading: Invalid item detected in saved inventory.");
+//
     }
 }

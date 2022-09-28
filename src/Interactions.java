@@ -19,6 +19,7 @@ public class Interactions {
     static Enemies enemy;
     static Boolean playerDead = false;
     static Boolean enemyDead = false;
+    static GamemodesEnum gamemode;
 
 
     /***
@@ -36,6 +37,7 @@ public class Interactions {
         int index = rand.nextInt(defaultEnemies.size()) ;
         enemy = defaultEnemies.get(index);
         user = theUser;
+        gamemode = user.getGamemode();
 
         System.out.println("You have come across an " + enemy.getCharacterName() + " who has " + enemy.getHP() + " HP. Prepare to battle!");
 
@@ -68,7 +70,7 @@ public class Interactions {
         playerDead = false;
         enemyDead = false;
         defaultEnemies = new ArrayList<>();
-        defaultEnemies.add( new Enemies("Demon Monster", 50, new ArrayList<>(Arrays.asList(new EvilThoughts(), new Fire(), new Punch()))));
+        defaultEnemies.add( new Enemies("Demon Monster", 50, new ArrayList<>(Arrays.asList(new EvilThoughts(), new FireBall(), new Punch()))));
         defaultEnemies.add(new Enemies("Angry Zombie", 60, new ArrayList<>(Arrays.asList(new Moan(), new Headbutt(), new ZombieBite()))));
         defaultEnemies.add(new Enemies("Elon Musk", 30, new ArrayList<>(Arrays.asList(new Lawsuit(), new TwitterAttack(), new SelfDrivingCar()))));
     }
@@ -105,7 +107,9 @@ public class Interactions {
             if (inventory.get(i).getUsage() > 0) {
                 Item current = inventory.get(i);
                 if (current.isWeapon) {
-                    System.out.println(i + ". " + current + " with damage " + current.getDamage() + " and " + current.usage + " uses remaining.");
+                    System.out.println(i + ". " + current + " with damage " + current.getDamage() +
+                                    (gamemode == GamemodesEnum.SURVIVAL ?  " and " + current.usage + " uses remaining." : ".")
+                           );
                 } else {
                     System.out.println(i + ". " + current + " with HP boost " + current.getHPBoost() + ". ");
                 }
@@ -141,7 +145,7 @@ public class Interactions {
         if (chosen.isWeapon) {
             System.out.println("You hit "+ enemy.getCharacterName() + " for " + chosen.damage + " damage!");
             enemy.HP -= chosen.damage;
-            user.decrementInv(chosen);
+            if (gamemode == GamemodesEnum.SURVIVAL) { user.decrementInv(chosen);}
 
             if (enemy.HP <= 0) {
                 System.out.println("You killed " + enemy.getCharacterName() + "! Well done!");
@@ -153,7 +157,7 @@ public class Interactions {
         } else {
             System.out.println("You used "+ chosen + " for " + chosen.getHPBoost() + " HP!");
             user.HP += chosen.getHPBoost();
-            user.decrementInv(chosen);
+            if (gamemode == GamemodesEnum.SURVIVAL) { user.decrementInv(chosen);}
             System.out.println("You now have " + user.getHP() + " HP.");
         }
 
