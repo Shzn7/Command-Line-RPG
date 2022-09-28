@@ -16,8 +16,11 @@ public class NPCInteraction {
         LuChenNPC luchenNPC = new LuChenNPC(user.getUserName());
         luchenNPC.chat();
         if (luchenNPC.getAddItem()) {
+            System.out.println("Your answer is correct\n");
             user.addRandomItem();
 
+        }else {
+            System.out.println("Your answer is incorrect\n");
         }
 
         if (amountOfCalls==3){
@@ -25,7 +28,11 @@ public class NPCInteraction {
             WuKongNPC wuKongNPC=new WuKongNPC(user.getUserName());
             wuKongNPC.chat();
             if(wuKongNPC.getAddItem()){
+                System.out.println("Your answer is correct\n");
                 user.addRandomItem();
+
+            }else {
+                System.out.println("Your answer is incorrect\n");
             }
 
         }
