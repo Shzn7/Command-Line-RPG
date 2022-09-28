@@ -21,6 +21,8 @@ public class Game {
      * Index to store the place along the gameString the user is at.
      */
     private static int index = 0;
+    static int NPCCalls=0;
+
 
     public static void main(String[] args) {
         File gameConfigFile = new File(JSON_FILE);
@@ -227,7 +229,13 @@ public class Game {
                             lastEnemyIndex = index;
                         }
                     }
-                    case NPC -> Interactions.talkWithNPC();
+                    //When a player meets an NPC, the NPC will talk to the player
+                    case NPC ->{
+                        NPCCalls++;
+                        if (NPCInteraction.talkWithNPC(user, NPCCalls)){
+                            index++;
+                        }}
+
                     case REWARD -> {
                         if (lastRewardIndex == index) {
                             System.out.println("You can't have another reward you cheeky bugger!");
