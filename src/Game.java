@@ -1,8 +1,5 @@
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Game {
     private static final String JSON_FILE = "src/Saves/gameConfiguration.json";
@@ -38,7 +35,9 @@ public class Game {
         if(!didLoad)
         {
             System.out.println(DEFAULT_LINE_BREAK);
-            if (Gamemode()) {
+
+            // If the user is in survival, they need to pick a character.
+            if (gamemode()) {
                 System.out.println(DEFAULT_LINE_BREAK);
                 setupCharacter();
             }
@@ -85,7 +84,7 @@ public class Game {
                 user = new User("System", "tempChar", 1, new ArrayList<>(List.of(new Punch())),GamemodesEnum.SURVIVAL);
                 if (!loadHelper()){
                     return false;
-                };
+                }
                 System.out.println("Done!");
 
                 return true;
@@ -117,18 +116,12 @@ public class Game {
         System.out.println("c) " + (new User(2)).introPrint());
         System.out.println("\nWhat character would you like to select:");
 
-        Scanner read = new Scanner(System.in);
-        String input = read.nextLine();
+        String input = Scanner_In.Scanner_in() ;
         switch (input.toUpperCase()) {
-            case "A", "NINJA" -> {
-                user = new User(0);
-            }
-            case "B", "WIZARD" -> {
-                user = new User(1);
-            }
-            case "C", "PIRATE" -> {
-                user = new User(2);
-            }
+            case "A", "NINJA" -> user = new User(0);
+            case "B", "WIZARD" -> user = new User(1);
+            case "C", "PIRATE" -> user = new User(2);
+
             default -> {
                 System.out.println("Not a valid input try again");
                 setupCharacter();
@@ -138,8 +131,14 @@ public class Game {
         System.out.println(DEFAULT_LINE_BREAK);
     }
 
+    /**
+     * Allows the user to choose between multiple gamemodes, based on the kind of game play
+     * they'd like.
+     * @author Alex Basserabie
+     * @return boolean; true for survival, false for OP Mode
+     */
+    public static boolean gamemode() {
 
-    public static boolean Gamemode() {
         System.out.println("Available Gamemodes:");
         System.out.println("1) Survival, where you have the choice of a few default characters, with limited life and attacks." +
                 "\n   For those who want a challenge.");
@@ -148,13 +147,17 @@ public class Game {
 
         System.out.println("\nWhat gamemode would you like to select:");
 
+        String input;
         Scanner read = new Scanner(System.in);
-        String input = read.nextLine();
+        input = read.nextLine();
+
+
         switch (input.toUpperCase()) {
             case "1", "SURVIVAL" -> {
                 return true;
             }
             case "2", "OP" -> {
+                //A list of every attack for the OP Mode Character
                 List<Item> everything = new ArrayList<>(Arrays.asList(new EvilThoughts(), new FireBall(),
                         new Headbutt(), new Kick(), new Lawsuit(), new Moan(), new Nunchucks(), new Pistol(), new Punch(), new SelfDrivingCar(),
                         new SmallRock(), new StockMarket(), new Sword(), new TwitterAttack(), new Wand(), new ZombieBite()));
@@ -164,17 +167,17 @@ public class Game {
                 return false;
             }
             default -> {
-                System.out.println("Not a valid input try again");
-                Gamemode();
+                System.out.println("Not a valid input, please try again");
+                System.out.println(DEFAULT_LINE_BREAK);
+                return gamemode();
             }
         }
 
-        return true;
     }
 
     /**
      *
-     * @authors collaborative effort
+     * @author collaborative effort
      */
     public static void move(){
         //Index variables to ensure the user doesn't redo moves.
@@ -194,7 +197,7 @@ public class Game {
         /*
         * Will end the game once the user has reached the end of the gameString
          */
-        Boolean inputCorrect = false;
+        boolean inputCorrect = false;
 
         Scanner read = new Scanner(System.in);
         String input = read.nextLine();
@@ -375,3 +378,23 @@ public class Game {
     public static User getUser() { return user; }
 
 }
+
+class HelpCall {
+
+    public static void helpCall() {
+        System.out.println(Game.DEFAULT_LINE_BREAK);
+        System.out.println("To play the game, enter a direction either north(n), south(s), east(e) or west(w) into the terminal. \n" +
+                "• This will allow you to either move forward towards the finish of the maze or possibly encounter some interesting characters. \n" +
+                "• You can check your player statistics at any time by entering 'stats' in the terminal, or 'inv' to see your inventory. \n" +
+                "• You can save or load in an existing game by entering either 'save' or 'load' \n" +
+                "   and quit the game at any time by entering 'quit' or 'q'.\n" +
+                "• Finally, to see this message again, enter 'help'.");
+    }
+}
+
+enum GamemodesEnum {
+    OPMODE, SURVIVAL
+}
+
+
+

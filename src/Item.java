@@ -1,7 +1,15 @@
 import java.util.ArrayList;
+import java.util.Objects;
 
 public abstract class Item {
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Item)) return false;
+        Item item = (Item) o;
+        return damage == item.damage && HPBoost == item.HPBoost && usage == item.usage && isWeapon == item.isWeapon && Objects.equals(name, item.name);
+    }
 
     @Override
     public String toString() {
@@ -67,8 +75,8 @@ class Pistol extends Item {
 class Wand extends Item {
     public Wand() {
         name = "Wand";
-        damage = 25;
-        usage = 1;
+        damage = 10;
+        usage = 5;
         isWeapon = true;
     }
 }
@@ -194,7 +202,7 @@ class Lawsuit extends Item {
 
 class ZombieBite extends Item {
     public ZombieBite() {
-        name = "bite";
+        name = "Bite";
         damage = 15;
         usage = 3;
         isWeapon = true;

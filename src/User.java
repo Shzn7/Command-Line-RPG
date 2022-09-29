@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class User extends Characters {
     private final List<Characters> defaultCharacters = Arrays.asList(
@@ -90,7 +87,7 @@ public class User extends Characters {
 
         inventory.add(item);
 
-        System.out.println("Congratulations, you have acquired " +item+ "!");
+        System.out.println("Congratulations, you have acquired a " +item+ "!");
     }
 
     /***
@@ -122,5 +119,21 @@ public class User extends Characters {
     public GamemodesEnum getGamemode() {
         return gamemode;
     }
+
+    @Override
+    public boolean equals(Object ob) {
+        User u = (User) ob;
+        if (!Objects.equals(this.characterName, u.characterName)) return false;
+        if (!Objects.equals(this.getHP(), u.getHP())) return false;
+        if (!Objects.equals(this.inventory.size(), u.inventory.size())) return false;
+        for (int i = 0; i < this.inventory.size(); i++){
+            System.out.println(this.inventory.get(i) + " , " + u.inventory.get(i));
+            if (!Objects.equals(this.inventory.get(i), u.inventory.get(i))) {
+                return false;
+            }
+        }
+        return Objects.equals(this.gamemode, u.gamemode);
+    }
+
 
 }
