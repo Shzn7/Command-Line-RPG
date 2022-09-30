@@ -21,17 +21,18 @@ public class NPCInteraction {
 
         }
         //The Second NPC the player will encounter.
-        if(amountOfCalls==2){
-        user = givenUser;
+        if(amountOfCalls==2) {
+            user = givenUser;
 
-        LuChenNPC luchenNPC = new LuChenNPC(user.getUserName());
-        luchenNPC.chat();
-        if (luchenNPC.getAddItem()) {
-            System.out.println("Your answer is correct\n");
-            user.addRandomItem();
+            LuChenNPC luchenNPC = new LuChenNPC(user.getUserName());
+            luchenNPC.chat();
+            if (luchenNPC.getAddItem()) {
+                System.out.println("Your answer is correct\n");
+                user.addRandomItem();
 
-        }else {
-            System.out.println("Your answer is incorrect\n");
+            } else {
+                System.out.println("Your answer is incorrect\n");
+            }
         }
 
         //The Final NPC the player will encounter.
@@ -48,7 +49,6 @@ public class NPCInteraction {
                 System.out.println("Your answer is incorrect\n");
             }
 
-        }
         }
 
     }
