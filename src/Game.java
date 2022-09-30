@@ -283,9 +283,14 @@ public class Game {
                     }
                     //When a player meets an NPC, the NPC will talk to the player
                     case NPC ->{
-                        if (lastNPCIndex == index) {
+                        if (lastNPCIndex == index && NPCCalls!=4) {
                             System.out.println("The NPC walked away, can't go back that direction!");
-                        } else {
+                        }
+                        else if (lastNPCIndex == index && NPCCalls==4){
+                            System.out.println("This place seems to be cursed. \n" +
+                                    "You feel a severe headache and are unable to step into the place.");
+                        }
+                            else {
                             lastNPCIndex =index;
                             NPCCalls++;
                             NPCInteraction.talkWithNPC(user, NPCCalls);
