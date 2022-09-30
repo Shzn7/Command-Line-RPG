@@ -18,7 +18,7 @@ public class battlesTest {
     public void EnemyVsPlayerSingleTest() {
         User u = new User(0);
         int userHealth = u.getHP();
-        Interactions inter = new Interactions(u);
+        Battles inter = new Battles(u);
         inter.enemyVsPlayer();
         assertTrue(userHealth > u.getHP());
     }
@@ -26,7 +26,7 @@ public class battlesTest {
     public void EnemyVsPlayerMultiTest() {
         User u = new User(0);
         int userHealth = u.getHP();
-        Interactions inter = new Interactions(u);
+        Battles inter = new Battles(u);
         inter.enemyVsPlayer();
         inter.enemyVsPlayer();
         inter.enemyVsPlayer();
@@ -37,7 +37,7 @@ public class battlesTest {
     public void ParseInputValidTest() {
         String input = "1";
         User u = new User(0);
-        Interactions inter = new Interactions(u);
+        Battles inter = new Battles(u);
         assertTrue(inter.parseInput(input));
     }
 
@@ -45,7 +45,7 @@ public class battlesTest {
     public void ParseInputInvalidStringTest() {
         String input = "bas";
         User u = new User(0);
-        Interactions inter = new Interactions(u);
+        Battles inter = new Battles(u);
         assertFalse(inter.parseInput(input));
     }
 
@@ -53,7 +53,7 @@ public class battlesTest {
     public void ParseInputInvalidIndexTest() {
         String input = "200";
         User u = new User(0);
-        Interactions inter = new Interactions(u);
+        Battles inter = new Battles(u);
         assertFalse(inter.parseInput(input));
     }
 }

@@ -2,15 +2,15 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Interactions.java class is used to house the classes for the possible interactions a player could have on their journey along
+ * Battles.java class is used to house the classes for the possible interactions a player could have on their journey along
  * the game string. This includes the fight sequence or battles, and the NPC encounters.
  *
  * @author Alex Basserabie
  */
 
-public class Interactions {
+public class Battles {
     /**
-     * Variables to store the global variables rewuired for the battle class, including the flags for if the user/enemy has died, the user
+     * Variables to store the global variables required for the battle class, including the flags for if the user/enemy has died, the user
      * and enemy and the default enemy list.
      */
 
@@ -20,14 +20,12 @@ public class Interactions {
     static Boolean playerDead = false;
     static Boolean enemyDead = false;
     static GamemodesEnum gamemode;
-    List<Item> inventory;
 
-    public Interactions(User user) {
+    //Constructor used for testing.
+    public Battles(User user) {
         this.user = user;
         initialise();
     }
-
-
 
     /***
      * This method is called within the game class and allows the user to enter the 'battle' sequence. In this sequence, the user

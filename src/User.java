@@ -8,6 +8,7 @@ public class User extends Characters {
     public String userName;
     public GamemodesEnum gamemode;
 
+    //Constructor is used a couple of times to create the OP Mode character and for testing.
     public User(String userName, String characterName, int HP, List<Item> inventory, GamemodesEnum gm) {
         super(characterName, HP, inventory);
         this.userName = userName;
@@ -119,6 +120,12 @@ public class User extends Characters {
     public GamemodesEnum getGamemode() {
         return gamemode;
     }
+
+    /**
+     * Rewritten equals function, as identical inventories didn't equal one another by default.
+     * @return boolean
+     * @author Alex Basserabie
+     */
 
     @Override
     public boolean equals(Object ob) {

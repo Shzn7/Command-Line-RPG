@@ -116,7 +116,9 @@ public class Game {
         System.out.println("c) " + (new User(2)).introPrint());
         System.out.println("\nWhat character would you like to select:");
 
-        String input = Scanner_In.Scanner_in() ;
+        Scanner read = new Scanner(System.in);
+        String input = read.nextLine();
+
         switch (input.toUpperCase()) {
             case "A", "NINJA" -> user = new User(0);
             case "B", "WIZARD" -> user = new User(1);
@@ -138,7 +140,7 @@ public class Game {
      * @return boolean; true for survival, false for OP Mode
      */
     public static boolean gamemode() {
-
+        //GIves the user their options
         System.out.println("Available Gamemodes:");
         System.out.println("1) Survival, where you have the choice of a few default characters, with limited life and attacks." +
                 "\n   For those who want a challenge.");
@@ -280,7 +282,7 @@ public class Game {
                         if (lastEnemyIndex == index) {
                             System.out.println("You don't want to go back that way!");
                         } else {
-                            Interactions.battle(user);
+                            Battles.battle(user);
                             lastEnemyIndex = index;
                         }
                     }
@@ -338,6 +340,7 @@ public class Game {
         getUser().setInventory((List<Item>) savedGameList.get(5));
         getUser().setHP((int) savedGameList.get(6));
         getUser().setCharacterName((String) savedGameList.get(7));
+        if (getUser().getHP() > 200) {getUser().gamemode = GamemodesEnum.OPMODE;}
         return true;
     }
 
