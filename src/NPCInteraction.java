@@ -1,3 +1,6 @@
+import java.util.Locale;
+import java.util.Scanner;
+
 public class NPCInteraction {
 
     static User user;
@@ -54,9 +57,25 @@ public class NPCInteraction {
             }
 
         }
+        if (amountOfCalls==4){
+            System.out.println("You found a lot of dead bodies of villagers here.\n" +
+                    "It seems that this place has experienced a fierce battle.\n"+
+                    "Do you want to inspect the body?\n"+
+                    "A.Yes\n"+"B.No\n");
+
+            Scanner scanner=new Scanner(System.in);
+
+            String choice=scanner.nextLine();
+
+            choice=choice.toUpperCase(Locale.ROOT);
+
+            if (choice.equals("A")){
+                user.addRandomItem();
+            }
+
         }
 
     }
 
 
-
+}
