@@ -6,6 +6,9 @@ public class Game {
     public static final String DEFAULT_LINE_BREAK = "----------------------------------------";
     private static User user;
     private static SaveLoad saveLoadHandler;
+    static List<Item> EVERYTHING = new ArrayList<>(Arrays.asList(new EvilThoughts(), new FireBall(),
+            new Headbutt(), new Kick(), new Lawsuit(), new Moan(), new Nunchucks(), new Pistol(), new Punch(), new SelfDrivingCar(),
+            new SmallRock(), new StockMarket(), new Sword(), new TwitterAttack(), new Wand(), new ZombieBite()));
 
     /**
      * Variables to store all game configuration data
@@ -111,18 +114,18 @@ public class Game {
     public static void setupCharacter() {
 
         System.out.println("\nAvailable Characters:");
-        System.out.println("a) " + (new User(0)).introPrint());
-        System.out.println("b) " + (new User(1)).introPrint());
-        System.out.println("c) " + (new User(2)).introPrint());
+        System.out.println("1) " + (new User(0)).introPrint());
+        System.out.println("2) " + (new User(1)).introPrint());
+        System.out.println("3) " + (new User(2)).introPrint());
         System.out.println("\nWhat character would you like to select:");
 
         Scanner read = new Scanner(System.in);
         String input = read.nextLine();
 
         switch (input.toUpperCase()) {
-            case "A", "NINJA" -> user = new User(0);
-            case "B", "WIZARD" -> user = new User(1);
-            case "C", "PIRATE" -> user = new User(2);
+            case "1", "NINJA" -> user = new User(0);
+            case "2", "WIZARD" -> user = new User(1);
+            case "3", "PIRATE" -> user = new User(2);
 
             default -> {
                 System.out.println("Not a valid input try again");
@@ -130,7 +133,6 @@ public class Game {
             }
         }
         System.out.println("You picked " +user.getCharacterName() +". ");
-        System.out.println(DEFAULT_LINE_BREAK);
     }
 
     /**
@@ -159,13 +161,7 @@ public class Game {
                 return true;
             }
             case "2", "OP" -> {
-                //A list of every attack for the OP Mode Character
-                List<Item> everything = new ArrayList<>(Arrays.asList(new EvilThoughts(), new FireBall(),
-                        new Headbutt(), new Kick(), new Lawsuit(), new Moan(), new Nunchucks(), new Pistol(), new Punch(), new SelfDrivingCar(),
-                        new SmallRock(), new StockMarket(), new Sword(), new TwitterAttack(), new Wand(), new ZombieBite()));
-
-
-                user = new User("", "OP Character", 1000, everything, GamemodesEnum.OPMODE);
+                user = new User("", "OP Character", 1000, EVERYTHING, GamemodesEnum.OPMODE);
                 return false;
             }
             default -> {

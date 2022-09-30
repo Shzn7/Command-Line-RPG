@@ -47,14 +47,39 @@ public class User extends Characters {
      * @return String
      */
     public String introPrint() {
-        String str = characterName + " | HP: " + HP + " | Attacks: ";
+        String str = characterName + " | HP: " + HP;
+
+        List<Item> notWeap = new ArrayList<>();
+        List<Item> weap = new ArrayList<>();
 
         for (int i = 0; i < inventory.size(); i++) {
-            str += inventory.get(i);
-            if (i != inventory.size()-1) {
-                str += ", ";
+            if (inventory.get(i).isWeapon()) {
+                weap.add(inventory.get(i));
+            } else {
+                notWeap.add(inventory.get(i));
             }
         }
+
+        if (weap.size() != 0) {
+            str  += " | Attacks: ";
+            for (int i = 0; i < weap.size(); i++) {
+                str += weap.get(i);
+                if (i != weap.size()-1) {
+                    str += ", ";
+                }
+            }
+        }
+
+        if (notWeap.size() != 0) {
+            str  += " | Items: ";
+            for (int i = 0; i < notWeap.size(); i++) {
+                str += notWeap.get(i);
+                if (i != notWeap.size()-1) {
+                    str += ", ";
+                }
+            }
+        }
+
         return str;
     }
 
@@ -67,25 +92,8 @@ public class User extends Characters {
      */
     public void addRandomItem(){
         Random random= new Random();
-        int a= random.nextInt(5);
-
-        Item item = null;
-        if(a==0){
-            item=new Apple();
-        }
-        else if (a==1){
-            item=new HealthPotion();
-        }
-        else if(a==2){
-            item=new SmallRock();
-        }
-        else if(a==3){
-            item=new Sword();
-        }
-        else {
-            item=new Headbutt();
-        }
-
+        int a= random.nextInt(Game.EVERYTHING.size());
+        Item item = Game.EVERYTHING.get(a);
         inventory.add(item);
 
         System.out.println("Congratulations, you have acquired a " +item+ "!");
