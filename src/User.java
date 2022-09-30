@@ -2,9 +2,9 @@ import java.util.*;
 
 public class User extends Characters {
     private final List<Characters> defaultCharacters = Arrays.asList(
-            new Characters("Ninja", 195, new ArrayList<>(Arrays.asList(new Nunchucks(), new Punch(), new Kick()))),
-            new Characters("Wizard", 200, new ArrayList<>(Arrays.asList(new Wand(), new FireBall(), new Poison(), new Apple()))),
-            new Characters("Pirate", 185, new ArrayList<>(Arrays.asList(new Sword(), new Pistol(), new SmallRock()))));
+            new Characters("Ninja", 135, new ArrayList<>(Arrays.asList(new Nunchucks(), new Punch(), new Kick()))),
+            new Characters("Wizard", 115, new ArrayList<>(Arrays.asList(new Wand(), new FireBall(), new Poison(), new Apple()))),
+            new Characters("Pirate", 120, new ArrayList<>(Arrays.asList(new Sword(), new Pistol(), new SmallRock()))));
     public String userName;
     public GamemodesEnum gamemode;
 
@@ -95,8 +95,10 @@ public class User extends Characters {
         int a= random.nextInt(Game.EVERYTHING.size());
         Item item = Game.EVERYTHING.get(a);
         inventory.add(item);
+        String str = "";
+        if (item.isWeapon()) str += " Attack";
 
-        System.out.println("Congratulations, you have acquired a " +item+ "!");
+        System.out.println("Congratulations, you have acquired a " + item + str + "!");
     }
 
     /***

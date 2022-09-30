@@ -157,6 +157,7 @@ public class Battles {
      */
     public static boolean parseInput(String input){
         List<Item> inventory = user.getInventory();
+        if (input.length() == 0) return false;
         //Determines if the input is just numerical
         for (int i = 0; i < input.length(); i++){
             if (!Character.isDigit(input.charAt(i))) {
@@ -195,11 +196,11 @@ public class Battles {
         enemy.decrementInv(item);
 
         user.HP -= item.getDamage();
-        System.out.println("You now have " + user.getHP() + " HP.");
-
         if (user.getHP() <= 0) {
             playerDead = true;
             System.out.println("Oh no! " +enemy.getCharacterName() + " killed you!");
+        } else {
+            System.out.println("You now have " + user.getHP() + " HP.");
         }
 
     }

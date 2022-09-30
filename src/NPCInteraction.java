@@ -12,7 +12,6 @@ public class NPCInteraction {
      * @author ZHUOJUN XIAO
      * @param givenUser user's name
      * @param amountOfCalls Count the number of times the player has encountered an NPC, making sure it is different each time.
-     * @return null
      */
     public static void talkWithNPC(User givenUser, int amountOfCalls) {
         //The first NPC the player will encounter.
@@ -33,7 +32,7 @@ public class NPCInteraction {
             luchenNPC.chat();
             if (luchenNPC.getAddItem()) {
                 System.out.println("Your answer is correct\n");
-                System.out.println("");
+                System.out.println();
                 user.addRandomItem();
 
             } else {
@@ -49,7 +48,7 @@ public class NPCInteraction {
 
             if(wuKongNPC.getAddItem()){
                 System.out.println("Your answer is correct\n");
-                System.out.println("");
+                System.out.println();
                 user.addRandomItem();
 
             }else {
