@@ -1,14 +1,14 @@
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Game {
     private static final String JSON_FILE = "src/Saves/gameConfiguration.json";
     public static final String DEFAULT_LINE_BREAK = "----------------------------------------";
     private static User user;
     private static SaveLoad saveLoadHandler;
+    static List<Item> EVERYTHING = new ArrayList<>(Arrays.asList(new EvilThoughts(), new FireBall(),
+            new Headbutt(), new Kick(), new Lawsuit(), new Moan(), new Nunchucks(), new Pistol(), new Punch(), new SelfDrivingCar(),
+            new SmallRock(), new StockMarket(), new Sword(), new TwitterAttack(), new Wand(), new ZombieBite()));
 
     /**
      * Variables to store all game configuration data
@@ -38,7 +38,9 @@ public class Game {
         if(!didLoad)
         {
             System.out.println(DEFAULT_LINE_BREAK);
-            if (Gamemode()) {
+
+            // If the user is in survival, they need to pick a character.
+            if (gamemode()) {
                 System.out.println(DEFAULT_LINE_BREAK);
                 setupCharacter();
             }
@@ -85,7 +87,7 @@ public class Game {
                 user = new User("System", "tempChar", 1, new ArrayList<>(List.of(new Punch())),GamemodesEnum.SURVIVAL);
                 if (!loadHelper()){
                     return false;
-                };
+                }
                 System.out.println("Done!");
 
                 return true;
@@ -112,34 +114,35 @@ public class Game {
     public static void setupCharacter() {
 
         System.out.println("\nAvailable Characters:");
-        System.out.println("a) " + (new User(0)).introPrint());
-        System.out.println("b) " + (new User(1)).introPrint());
-        System.out.println("c) " + (new User(2)).introPrint());
+        System.out.println("1) " + (new User(0)).introPrint());
+        System.out.println("2) " + (new User(1)).introPrint());
+        System.out.println("3) " + (new User(2)).introPrint());
         System.out.println("\nWhat character would you like to select:");
 
         Scanner read = new Scanner(System.in);
         String input = read.nextLine();
+
         switch (input.toUpperCase()) {
-            case "A", "NINJA" -> {
-                user = new User(0);
-            }
-            case "B", "WIZARD" -> {
-                user = new User(1);
-            }
-            case "C", "PIRATE" -> {
-                user = new User(2);
-            }
+            case "1", "NINJA" -> user = new User(0);
+            case "2", "WIZARD" -> user = new User(1);
+            case "3", "PIRATE" -> user = new User(2);
+
             default -> {
                 System.out.println("Not a valid input try again");
                 setupCharacter();
             }
         }
         System.out.println("You picked " +user.getCharacterName() +". ");
-        System.out.println(DEFAULT_LINE_BREAK);
     }
 
-
-    public static boolean Gamemode() {
+    /**
+     * Allows the user to choose between multiple gamemodes, based on the kind of game play
+     * they'd like.
+     * @author Alex Basserabie
+     * @return boolean; true for survival, false for OP Mode
+     */
+    public static boolean gamemode() {
+        //GIves the user their options
         System.out.println("Available Gamemodes:");
         System.out.println("1) Survival, where you have the choice of a few default characters, with limited life and attacks." +
                 "\n   For those who want a challenge.");
@@ -148,33 +151,31 @@ public class Game {
 
         System.out.println("\nWhat gamemode would you like to select:");
 
+        String input;
         Scanner read = new Scanner(System.in);
-        String input = read.nextLine();
+        input = read.nextLine();
+
+
         switch (input.toUpperCase()) {
             case "1", "SURVIVAL" -> {
                 return true;
             }
             case "2", "OP" -> {
-                List<Item> everything = new ArrayList<>(Arrays.asList(new EvilThoughts(), new FireBall(),
-                        new Headbutt(), new Kick(), new Lawsuit(), new Moan(), new Nunchucks(), new Pistol(), new Punch(), new SelfDrivingCar(),
-                        new SmallRock(), new StockMarket(), new Sword(), new TwitterAttack(), new Wand(), new ZombieBite()));
-
-
-                user = new User("", "OP Character", 1000, everything, GamemodesEnum.OPMODE);
+                user = new User("", "OP Character", 1000, EVERYTHING, GamemodesEnum.OPMODE);
                 return false;
             }
             default -> {
-                System.out.println("Not a valid input try again");
-                Gamemode();
+                System.out.println("Not a valid input, please try again");
+                System.out.println(DEFAULT_LINE_BREAK);
+                return gamemode();
             }
         }
 
-        return true;
     }
 
     /**
      *
-     * @authors collaborative effort
+     * @author collaborative effort
      */
     public static void move(){
         //Index variables to ensure the user doesn't redo moves.
@@ -194,7 +195,7 @@ public class Game {
         /*
         * Will end the game once the user has reached the end of the gameString
          */
-        Boolean inputCorrect = false;
+        boolean inputCorrect = false;
 
         Scanner read = new Scanner(System.in);
         String input = read.nextLine();
@@ -277,7 +278,7 @@ public class Game {
                         if (lastEnemyIndex == index) {
                             System.out.println("You don't want to go back that way!");
                         } else {
-                            Interactions.battle(user);
+                            Battles.battle(user);
                             lastEnemyIndex = index;
                         }
                     }
@@ -340,6 +341,7 @@ public class Game {
         getUser().setInventory((List<Item>) savedGameList.get(5));
         getUser().setHP((int) savedGameList.get(6));
         getUser().setCharacterName((String) savedGameList.get(7));
+        if (getUser().getHP() > 200) {getUser().gamemode = GamemodesEnum.OPMODE;}
         return true;
     }
 
@@ -380,3 +382,23 @@ public class Game {
     public static User getUser() { return user; }
 
 }
+
+class HelpCall {
+
+    public static void helpCall() {
+        System.out.println(Game.DEFAULT_LINE_BREAK);
+        System.out.println("To play the game, enter a direction either north(n), south(s), east(e) or west(w) into the terminal. \n" +
+                "• This will allow you to either move forward towards the finish of the maze or possibly encounter some interesting characters. \n" +
+                "• You can check your player statistics at any time by entering 'stats' in the terminal, or 'inv' to see your inventory. \n" +
+                "• You can save or load in an existing game by entering either 'save' or 'load' \n" +
+                "   and quit the game at any time by entering 'quit' or 'q'.\n" +
+                "• Finally, to see this message again, enter 'help'.");
+    }
+}
+
+enum GamemodesEnum {
+    OPMODE, SURVIVAL
+}
+
+
+

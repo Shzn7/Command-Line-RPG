@@ -11,9 +11,13 @@ public class Characters {
         this.inventory = inventory;
     }
 
-    public Characters() {
+    public Characters() {}
 
-    }
+    /**
+     * Method for ensuring that when an item is used, the item's usage is decremented appropriately
+     * or removed from the inventory if usage has run out.
+     * @author Alex Basserabie
+     */
     public void decrementInv(Item item) {
         int index = inventory.indexOf(item);
         if (inventory.get(index).getUsage() <= 1) {

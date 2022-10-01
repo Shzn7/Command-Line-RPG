@@ -1,16 +1,14 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class User extends Characters {
     private final List<Characters> defaultCharacters = Arrays.asList(
-            new Characters("Ninja", 195, new ArrayList<>(Arrays.asList(new Nunchucks(), new Punch(), new Kick()))),
-            new Characters("Wizard", 200, new ArrayList<>(Arrays.asList(new Wand(), new FireBall(), new Poison(), new Apple()))),
-            new Characters("Pirate", 185, new ArrayList<>(Arrays.asList(new Sword(), new Pistol(), new SmallRock()))));
+            new Characters("Ninja", 135, new ArrayList<>(Arrays.asList(new Nunchucks(), new Punch(), new Kick()))),
+            new Characters("Wizard", 115, new ArrayList<>(Arrays.asList(new Wand(), new FireBall(), new Poison(), new Apple()))),
+            new Characters("Pirate", 120, new ArrayList<>(Arrays.asList(new Sword(), new Pistol(), new SmallRock()))));
     public String userName;
     public GamemodesEnum gamemode;
 
+    //Constructor is used a couple of times to create the OP Mode character and for testing.
     public User(String userName, String characterName, int HP, List<Item> inventory, GamemodesEnum gm) {
         super(characterName, HP, inventory);
         this.userName = userName;
@@ -49,14 +47,39 @@ public class User extends Characters {
      * @return String
      */
     public String introPrint() {
-        String str = characterName + " | HP: " + HP + " | Attacks: ";
+        String str = characterName + " | HP: " + HP;
+
+        List<Item> notWeap = new ArrayList<>();
+        List<Item> weap = new ArrayList<>();
 
         for (int i = 0; i < inventory.size(); i++) {
-            str += inventory.get(i);
-            if (i != inventory.size()-1) {
-                str += ", ";
+            if (inventory.get(i).isWeapon()) {
+                weap.add(inventory.get(i));
+            } else {
+                notWeap.add(inventory.get(i));
             }
         }
+
+        if (weap.size() != 0) {
+            str  += " | Attacks: ";
+            for (int i = 0; i < weap.size(); i++) {
+                str += weap.get(i);
+                if (i != weap.size()-1) {
+                    str += ", ";
+                }
+            }
+        }
+
+        if (notWeap.size() != 0) {
+            str  += " | Items: ";
+            for (int i = 0; i < notWeap.size(); i++) {
+                str += notWeap.get(i);
+                if (i != notWeap.size()-1) {
+                    str += ", ";
+                }
+            }
+        }
+
         return str;
     }
 
@@ -69,28 +92,13 @@ public class User extends Characters {
      */
     public void addRandomItem(){
         Random random= new Random();
-        int a= random.nextInt(5);
-
-        Item item = null;
-        if(a==0){
-            item=new Apple();
-        }
-        else if (a==1){
-            item=new HealthPotion();
-        }
-        else if(a==2){
-            item=new SmallRock();
-        }
-        else if(a==3){
-            item=new Sword();
-        }
-        else {
-            item=new Headbutt();
-        }
-
+        int a= random.nextInt(Game.EVERYTHING.size());
+        Item item = Game.EVERYTHING.get(a);
         inventory.add(item);
+        String str = "";
+        if (item.isWeapon()) str += " Attack";
 
-        System.out.println("Congratulations, you have acquired " +item+ "!");
+        System.out.println("Congratulations, you have acquired a " + item + str + "!");
     }
 
     /***
@@ -122,5 +130,27 @@ public class User extends Characters {
     public GamemodesEnum getGamemode() {
         return gamemode;
     }
+
+    /**
+     * Rewritten equals function, as identical inventories didn't equal one another by default.
+     * @return boolean
+     * @author Alex Basserabie
+     */
+
+    @Override
+    public boolean equals(Object ob) {
+        User u = (User) ob;
+        if (!Objects.equals(this.characterName, u.characterName)) return false;
+        if (!Objects.equals(this.getHP(), u.getHP())) return false;
+        if (!Objects.equals(this.inventory.size(), u.inventory.size())) return false;
+        for (int i = 0; i < this.inventory.size(); i++){
+            System.out.println(this.inventory.get(i) + " , " + u.inventory.get(i));
+            if (!Objects.equals(this.inventory.get(i), u.inventory.get(i))) {
+                return false;
+            }
+        }
+        return Objects.equals(this.gamemode, u.gamemode);
+    }
+
 
 }

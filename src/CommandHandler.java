@@ -85,3 +85,11 @@ public class CommandHandler {
     }
 
 }
+
+/**
+ * ENUM Type for all the possible commands that can be given to the handler.
+ */
+enum CommandsEnum {
+    NORTH, EAST, SOUTH, WEST, SAVE, LOAD, HELP, INV, STATS, QUIT, NULL, REWARD, ENEMY, NPC
+}
+
