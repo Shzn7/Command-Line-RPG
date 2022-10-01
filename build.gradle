@@ -9,10 +9,6 @@ repositories {
     mavenCentral()
 }
 
-tasks.withType(JavaCompile) {
-    options.release = 18
-}
-
 sourceSets {
     main {
         java {
