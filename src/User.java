@@ -18,7 +18,11 @@ public class User extends Characters {
         this.gamemode = gm;
     }
 
-    // This constructor is used when selecting character at the beginning of the game
+    /**
+     * This constructor is used when selecting character at the beginning of the game when survival mode selected.
+     * Returns a new User based off the selected default character.
+     * @author Deni Lanc
+     */
     public User (int characterSelection) {
         Characters temp = defaultCharacters.get(characterSelection);
         this.characterName = temp.characterName;
