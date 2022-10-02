@@ -18,8 +18,8 @@ member_declaration:
     name: Zhuojun Xiao
     uid: u7424233
   -
-    name: 
-    uid:
+    name: Alex Basserabie
+    uid: u7287093
   -
     name: 
     uid:
