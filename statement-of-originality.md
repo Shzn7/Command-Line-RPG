@@ -12,6 +12,9 @@ member_declaration:
     name: Deni Lanc
     uid: u7284728
   -
+    name: Shaazaan Majeed
+    uid: u7283219
+  -
     name: 
     uid:
   -
