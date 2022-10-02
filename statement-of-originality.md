@@ -15,8 +15,8 @@ member_declaration:
     name: Shaazaan Majeed
     uid: u7283219
   -
-    name: 
-    uid:
+    name: Zhuojun Xiao
+    uid: u7424233
   -
     name: 
     uid:
