@@ -21,8 +21,8 @@ member_declaration:
     name: Alex Basserabie
     uid: u7287093
   -
-    name: 
-    uid:
+    name: Brad Froud
+    uid: u7285455
 
 # list numbered references below (replace the example with your own references) 
 ---
